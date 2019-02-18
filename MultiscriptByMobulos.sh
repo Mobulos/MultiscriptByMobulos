@@ -31,7 +31,7 @@ echo 1. Starten
 echo 2. Script Updaten
 echo 3. Exit
 echo Weitere Funktionen sind in Arbeit
-read -p "Bot Befehle" befehl
+read -p "Bot Befehle: " befehl
 case $befehl in
 	1)
 	 clear
@@ -42,7 +42,8 @@ case $befehl in
 	 rm MultiscriptByMobulos.sh
 	 wget 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh'
 	 chmod +x MultiscriptByMobulos.sh
-	 echo Update abgeschlossen, bitte starte das Script erneut
+	 clear
+	 echo Update abgeschlossen, du kannst das Script jetzt erneut starten!
 	 exit
 	 ;;
 	3)
@@ -58,7 +59,7 @@ esac
 start:
 clear
 failed:
-read -p "Sollen die Exsistierenden Benutzer angezeigt werden? (Ja/Nein)" jnuser
+read -p "Sollen die Exsistierenden Benutzer angezeigt werden? (Ja/Nein) :" jnuser
 case $jnuser in
   Ja)
     clear

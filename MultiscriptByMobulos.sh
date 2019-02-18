@@ -114,11 +114,10 @@ read -p "Wie soll der Bot heissen?: " name
 adduser --gecos "" --disabled-password $name
 adduser $name sudo
 sh -c "echo '$name ALL=NOPASSWD: ALL' >> /etc/sudoers"
-cp -R /home/bots/sinusbot.current/* /home/$name/.
-clear
 echo Erforderliche Daten werden herruntergeladen
 wget -P /home/$name/ 'http://mobulos.net/sinusbot.current.zip'
 unzip /home/$name/sinusbot.current.zip
+rm /home/$name/sinusbot.current.zip
 wget -P /home/$name/ 'http://mobulos.net/TeamSpeak3-Client-linux_amd64-3.2.3.run'
 echo "echo "sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
 echo "echo "sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh

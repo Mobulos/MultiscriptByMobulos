@@ -117,6 +117,7 @@ sh -c "echo '$name ALL=NOPASSWD: ALL' >> /etc/sudoers"
 echo Erforderliche Daten werden herruntergeladen
 wget -P /home/$name/ 'http://mobulos.net/sinusbot.current.zip'
 unzip /home/$name/sinusbot.current.zip
+mv /home/$name/sinusbot.current/* /home/$name/.
 rm /home/$name/sinusbot.current.zip
 wget -P /home/$name/ 'http://mobulos.net/TeamSpeak3-Client-linux_amd64-3.2.3.run'
 echo "echo "sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh

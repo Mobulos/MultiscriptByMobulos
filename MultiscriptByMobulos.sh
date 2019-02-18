@@ -2,19 +2,19 @@
 #################				Script				##########################
 ##############################################################################
 
-#!/bin/bash 
-# include this boilerplate 
-function jumpto 
-{ 
-    label=$1 
-    cmd=$(sed -n "/$label:/{:a;n;p;ba};" $0 | grep -v ':$') 
-    eval "$cmd" 
-    exit 
-} 
+#!/bin/bash
+# include this boilerplate
+function jumpto
+{
+    label=$1
+    cmd=$(sed -n "/$label:/{:a;n;p;ba};" $0 | grep -v ':$')
+    eval "$cmd"
+    exit
+}
 
 start=${1:-"menue"}
-start=${2:-"start"} 
-ja=${3:-"ja"} 
+start=${2:-"start"}
+ja=${3:-"ja"}
 nein=${4:-"nein"}
 failedmunue=${5:-"failedmunue"}
 failed=${6:-"failed"}
@@ -59,7 +59,7 @@ esac
 start:
 clear
 failed:
-read -p "Sollen die Exsistierenden Benutzer angezeigt werden? (Ja/Nein) :" jnuser
+read -p "Sollen die Exsistierenden Benutzer angezeigt werden? (Ja/Nein): " jnuser
 case $jnuser in
   Ja)
     clear

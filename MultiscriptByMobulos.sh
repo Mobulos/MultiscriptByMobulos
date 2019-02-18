@@ -18,6 +18,7 @@ ja=${3:-"ja"}
 nein=${4:-"nein"}
 failedmunue=${5:-"failedmunue"}
 failed=${6:-"failed"}
+menue=${7:-"menue"}
 
 
 jumpto $menue

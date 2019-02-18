@@ -20,7 +20,7 @@ failedmunue=${5:-"failedmunue"}
 failed=${6:-"failed"}
 
 
-jumpto $start
+jumpto $menue
 
 
 menue:

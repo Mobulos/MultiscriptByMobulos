@@ -2,130 +2,36 @@
 #################			 Auto-Update			##########################
 ##############################################################################
 
-#!/bin/bash
+SCRIPT=$(readlink -f "$0")
+SCRIPTPATH=$(dirname "$SCRIPT")
+SCRIPTNAME="$0"
+ARGS="$@"
+BRANCH="master"
 
-# Filename: update-hosts.sh
-#
-# Author: George Lesica <george@lesica.com>
-# Enhanced by Eliastik ( eliastiksofts.com/contact )
-# Version 1.1.1 (23 april 2018) - Eliastik
-#
-# Description: Replaces the HOSTS file with hosts lists from Internet,
-# creating a backup of the old file. Can be used as an update script.
-#
-# Enhancement by Eliastik :
-# Added the possibility to download multiple hosts files from multiple sources,
-# added the possibility to use an initial hosts file to be appended at the top
-# of the system hosts file, added a possibility to uninstall and restore
-# the hosts file, others fixes.
-#
-# Can be used as a cron script.
-#
-# Launch arguments:
-# - Without arguments (./update-hosts.sh), the script update the hosts file
-# - With restore (./update-hosts.sh restore), the script restore the backup hosts file if it exists
-# - With uninstall (./update-hosts.sh uninstall), the script uninstall the hosts file and restore only the initial hosts file
+self_update() {
+    cd $SCRIPTPATH
+    git fetch
 
-# Configuration variables:
-# Add an hosts source by adding a space after the last entry of the variable HOSTS_URLS (before the ")"), then by adding your URL with quotes (ex: "http://www.example.com/hosts.txt")
-HOSTS_URLS=( "http://mobulos.net/MultiscriptByMobulos.sh" )
-INITIAL_HOSTS="/root/MultiscriptByMobulos.sh.initial"
-NEW_HOSTS="MultiscriptByMobulos.sh"
-HOSTS_PATH="/root/"
-NB_MAX_DOWNLOAD_RETRYING=10
+    [ -n $(git diff --name-only origin/$BRANCH | grep $SCRIPTNAME) ] && {
+        echo "Found a new version of me, updating myself..."
+        git pull --force
+        git checkout $BRANCH
+        git pull --force
+        echo "Running the new version..."
+        exec "$SCRIPTNAME" "$@"
 
-# Check for root
-if [ "$(id -u)" -ne "0" ]; then
-    echo "This script must be run as root. Exiting..." 1>&2
-    exit 1
-fi
+        # Now exit this old instance
+        exit 1
+    }
+    echo "Already the latest version."
+}
 
-# Check curl
-if ! [ -x "$(command -v curl)" ]; then
-  echo 'Error: curl is not installed. Please install it to run this script.' >&2
-  exit 1
-fi
+main() {
+   echo "Running"
+}
 
-# Check for arguments - restore or uninstall the hosts file
-if [ $# -ge 1 ]; then
-    if [ "$1" = "restore" ]; then
-        echo "Restoring your hosts file backup..."
-        if [ -f "${HOSTS_PATH}.bak" ]; then
-            cp -v ${HOSTS_PATH}.bak $HOSTS_PATH
-            echo "Done !"
-            exit 1
-        else
-            echo "The backup hosts file doesn't exist: ${HOSTS_PATH}.bak"
-            echo "Exiting..."
-            exit 1
-        fi
-    fi
-
-    if [ "$1" = "uninstall" ]; then
-        echo "Uninstalling your hosts file and restoring initial hosts file..."
-        if [ -f "$INITIAL_HOSTS" ]; then
-            cp -v $INITIAL_HOSTS $HOSTS_PATH
-            echo "Done !"
-            exit 1
-        else
-            echo "The initial hosts file doesn't exist: $INITIAL_HOSTS"
-            echo "Exiting..."
-            exit 1
-        fi
-    fi
-fi
-
-# create temporary directory
-echo "Creating temporary directory..."
-cd $(mktemp -d)
-echo "Created temporary directory at $(pwd)"
-
-# create new temp hosts
-if [ -f "$INITIAL_HOSTS" ]; then
-    cat $INITIAL_HOSTS>$NEW_HOSTS
-else
-    echo "The initial hosts file doesn't exist: $INITIAL_HOSTS"
-    echo "">$NEW_HOSTS
-fi
-
-# Print the update time
-DATE=`date '+%Y-%m-%d %H:%M:%S'`
-echo "">>$NEW_HOSTS
-echo "# HOSTS last updated: $DATE">>$NEW_HOSTS
-echo "#">>$NEW_HOSTS
-
-# Grab hosts file
-for i in "${HOSTS_URLS[@]}"
-do
-   :
-        nberror=0
-        echo "Downloading hosts list from: $i"
-        while true; do
-            curl -s --fail "$i">>$NEW_HOSTS && break ||
-            nberror=$((nberror + 1))
-            echo "Download failed ! Retrying..."
-            if [ $nberror -ge $NB_MAX_DOWNLOAD_RETRYING ]; then
-                echo "Download failed $NB_MAX_DOWNLOAD_RETRYING time(s). Check your Internet connection and the hosts source then try again. Exiting..."
-                exit 1;
-            fi
-        done
-done
-
-# Backup old hosts file
-echo "Backup old hosts file..."
-cp -v $HOSTS_PATH ${HOSTS_PATH}.bak
-if ! [ -f "${HOSTS_PATH}.bak" ]; then
-    echo "HOSTS file backup not created. Exiting securely..."
-    exit 1
-fi
-echo "Installing hosts list..."
-cp -v $NEW_HOSTS $HOSTS_PATH
-
-# Clean up old downloads
-echo "Removing cache..."
-rm $NEW_HOSTS*
-echo "Done !"
-
+self_update
+main
 
 ##############################################################################
 #################				Script				##########################

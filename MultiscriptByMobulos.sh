@@ -19,9 +19,32 @@ nein=${4:-"nein"}
 failedmunue=${5:-"failedmunue"}
 failed=${6:-"failed"}
 menue=${7:-"menue"}
+install=${7:-"menue"}
+ubuntu=${7:-"ubuntu"}
+noubuntu=${7:-"noubuntu"}
+
+jumpto $install
 
 
-jumpto $menue
+install:
+apt-get update
+apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2
+update-ca-certificates
+read -p "Hast du Ubuntu 18.04? (Ja/Nein) Falls du dir nicht sicher bist probiere es mit "Nein" " ubuntu
+case ubuntu in
+  Ja)
+  add-apt-repository universe
+  apt-get update
+  clear
+  jumpto $menue
+  ;;
+
+  Nein)
+  apt-get install libglib2.0-0
+  clear
+  jumpto $menue
+  ;;
+esac
 
 
 menue:

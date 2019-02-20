@@ -1,5 +1,12 @@
+#© Copyright 2019 – Urheberrechtshinweis
+#
+#Alle Inhalte, insbesondere Texte, sind urheberrechtlich geschützt. Das Urheberrecht liegt, soweit nicht ausdrücklich anders gekennzeichnet, bei Fabian Schmeltzer. Bitte fragen Sie mich, falls Sie die Inhalte dieses Internetangebotes verwenden möchten.
+#
+#
+#Wer gegen das Urheberrecht verstößt (z.B. Texte unerlaubt kopiert), macht sich gem. §§ 106 ff UrhG strafbar, wird zudem kostenpflichtig abgemahnt und muss Schadensersatz leisten (§ 97 UrhG).
+#
 ##############################################################################
-#################				Script				##########################
+#################		 Script		    ##########################
 ##############################################################################
 
 #!/bin/bash

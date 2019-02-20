@@ -33,7 +33,7 @@ clear
 read -p "Ist das dein erster start? (Ja/Nein) " first
 case $first in
 	Ja)
-    sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 update-ca-certificates
+    sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 update-ca-certificates unzip
 	jumpto $installall
     ;;
 	

@@ -40,7 +40,7 @@ clear
 read -p "Ist das dein erster start? (Ja/Nein) " first
 case $first in
 	Ja)
-    sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 update-ca-certificates unzip
+    sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 update-ca-certificates unzip cat
 	jumpto $installall
     ;;
 <<<<<<< HEAD
@@ -50,11 +50,11 @@ case $first in
 	;;
 
 =======
-	
+
 	Nein)
 	jumpto $menue
 	;;
-	
+
 >>>>>>> 449824c4ad63790a259f3fec9d1e153bfbc24bc5
 esac
 
@@ -78,7 +78,7 @@ read -p "Hast du Ubuntu 18.04? (Ja/Nein) Falls du dir nicht sicher bist probiere
 <<<<<<< HEAD
 
 =======
-	
+
 >>>>>>> 449824c4ad63790a259f3fec9d1e153bfbc24bc5
 
 

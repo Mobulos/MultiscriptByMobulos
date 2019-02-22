@@ -43,11 +43,19 @@ case $first in
     sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 update-ca-certificates unzip
 	jumpto $installall
     ;;
+<<<<<<< HEAD
 
 	Nein)
 	jumpto $menue
 	;;
 
+=======
+	
+	Nein)
+	jumpto $menue
+	;;
+	
+>>>>>>> 449824c4ad63790a259f3fec9d1e153bfbc24bc5
 esac
 
 installall:
@@ -67,7 +75,11 @@ read -p "Hast du Ubuntu 18.04? (Ja/Nein) Falls du dir nicht sicher bist probiere
       jumpto $menue
       ;;
     esac
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 449824c4ad63790a259f3fec9d1e153bfbc24bc5
 
 
 menue:
@@ -144,7 +156,10 @@ echo "sudo rm sinusbot.current/" >> /home/$name/1ststart.sh
 wget -P /home/$name/ 'http://mobulos.net/TeamSpeak3-Client-linux_amd64-3.2.3.run'
 echo "echo "sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
 echo "echo "sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+<<<<<<< HEAD
 echo "echo "echo" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+=======
+>>>>>>> 449824c4ad63790a259f3fec9d1e153bfbc24bc5
 echo "echo "echo Eventuelle Fehlermeldungen wirken sicht nicht auf den Startvorgang, und sollten IGNORIERT werden" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
 
 clear

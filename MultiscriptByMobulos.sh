@@ -82,6 +82,7 @@ read -p "Hast du Ubuntu 18.04? (Ja/Nein) Falls du dir nicht sicher bist probiere
 >>>>>>> 449824c4ad63790a259f3fec9d1e153bfbc24bc5
 
 
+
 menue:
 clear
 failedmenue:

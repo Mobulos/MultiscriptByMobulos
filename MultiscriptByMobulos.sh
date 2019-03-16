@@ -6,7 +6,7 @@
 #Wer gegen das Urheberrecht verstößt (z.B. Texte unerlaubt kopiert), macht sich gem. §§ 106 ff UrhG strafbar, wird zudem kostenpflichtig abgemahnt und muss Schadensersatz leisten (§ 97 UrhG).
 #
 ##############################################################################
-#################		 Script		    ##########################
+#################	         	 Script		        ##########################
 ##############################################################################
 
 #!/bin/bash
@@ -31,6 +31,7 @@ ubuntu=${9:-"ubuntu"}
 noubuntu=${10:-"noubuntu"}
 first=${11:-"first"}
 installall=${12:-"installall"}
+log=${13:-"log"}
 
 jumpto $install
 
@@ -73,9 +74,10 @@ read -p "Hast du Ubuntu 18.04? (Ja/Nein) Falls du dir nicht sicher bist probiere
 menue:
 clear
 failedmenue:
-echo 1. Starten
+echo 1. Installieren
 echo 2. Script Updaten
-echo 3. Exit
+echo 3. Update-Log
+echo 4. Exit
 echo Weitere Funktionen sind in Arbeit!
 read -p "Bot Befehle: " befehl
 case $befehl in
@@ -93,6 +95,18 @@ case $befehl in
 	 exit
 	 ;;
 	3)
+	 clear
+	 echo "Update vom 16.3.2019:"
+	 echo "Neu Funktionen:"
+	 echo "	Der Bot kann jetzt neugestartet/gestoppt werden."
+	 echo "Behobene Fehler:"
+	 echo " LogLevel Bug behoben."
+	 echo "	'/run/user/0 Zugriff verweigert' "
+	 echo "		Bot konnte sich nicht zum server verbinden."
+	 echo "Sonstiges:"
+	 jumpto $start
+	 ;;
+	4)
 	 exit
 	 ;;
 	*)
@@ -145,6 +159,12 @@ wget -P /home/$name/ 'http://mobulos.net/TeamSpeak3-Client-linux_amd64-3.2.3.run
 echo "echo "sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
 echo "echo "sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
 echo "echo "echo Eventuelle Fehlermeldungen wirken sicht nicht auf den Startvorgang, und sollten IGNORIERT werden" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+echo "echo "pkill screen" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
+echo "echo "clear" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
+echo "echo "pkill screen" >> /home/$name/restart.sh" >> /home/$name/1ststart.sh
+echo "echo "./start.sh" >> /home/$name/restart.sh" >> /home/$name/1ststart.sh
+echo "echo "clear" >> /home/$name/restart.sh" >> /home/$name/1ststart.sh
+
 
 clear
 echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64-3.2.3.run" >> /home/$name/1ststart.sh
@@ -175,11 +195,14 @@ echo "echo" >> /home/$name/1ststart.sh
 echo "echo" >> /home/$name/1ststart.sh
 echo "ip addr show" >> /home/$name/1ststart.sh
 chmod u+x /home/$name/1ststart.sh
+echo "sudo chmod u+x /home/$name/stop.sh" >> /home/$name/1ststart.sh
+echo "sudo chmod u+x /home/$name/restart.sh" >> /home/$name/1ststart.sh
 echo "sudo chmod u+x /home/$name/sinusbot" >> /home/$name/1ststart.sh
 echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64/ts3client_runscript.sh" >> /home/$name/1ststart.sh
 
 echo "ListenPort = $port " > /home/$name/config2.ini.dist
 echo "ListenHost = '0.0.0.0'" >> /home/$name/config2.ini.dist
+echo "LogLevel = 10" >> /home/$name/config2.ini.dist
 echo "TS3Path = '/home/$name/TeamSpeak3-Client-linux_amd64/ts3client_linux_amd64'" >> /home/$name/config2.ini.dist
 echo "sudo chown -R $name:$name /home/$name" >> /home/$name/1ststart.sh
 echo "mv config2.ini.dist config.ini.dist" >> /home/$name/1ststart.sh

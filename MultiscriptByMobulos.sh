@@ -216,7 +216,9 @@ echo "rm /home/$name/1ststart.sh" >> /home/$name/1ststart.sh
 
 chown -R $name:$name /home/$name/*
 clear
-echo "Leider habe ich keinen Weg gefunden die Datei automatisch zu starten, daher:"
-echo "Gebe  './1ststart.sh'  ein, um die Installation zu vervollständigen."
+cd /home/$name
+su $name -c /home/$name/1ststart.sh
+#echo "Leider habe ich keinen Weg gefunden die Datei automatisch zu starten, daher:"
+#echo "Gebe  './1ststart.sh'  ein, um die Installation zu vervollständigen."
 su - $name
 exit

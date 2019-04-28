@@ -19,7 +19,7 @@ function jumpto
     exit
 }
 
-start=${1:-"menue"}
+menue=${1:-"menue"}
 start=${2:-"start"}
 ja=${3:-"ja"}
 nein=${4:-"nein"}
@@ -149,13 +149,13 @@ adduser $name sudo
 sh -c "echo '$name ALL=NOPASSWD: ALL' >> /etc/sudoers"
 echo Erforderliche Daten werden herruntergeladen
 
-wget -P /home/$name/ 'http://mobulos.net/sinusbot.current.zip'
+wget -P /home/$name/ 'http://server.mobulos.de/download/sinusbot.current.zip'
 echo "sudo unzip /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
 echo "sudo rm /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
 echo "sudo mv sinusbot.current/* ." >> /home/$name/1ststart.sh
 echo "sudo rm sinusbot.current/" >> /home/$name/1ststart.sh
 
-wget -P /home/$name/ 'http://mobulos.net/TeamSpeak3-Client-linux_amd64-3.2.3.run'
+wget -P /home/$name/ 'http://server.mobulos.de/download/TeamSpeak3-Client-linux_amd64-3.2.3.run'
 echo "echo "sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
 echo "echo "sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
 echo "echo "echo Eventuelle Fehlermeldungen wirken sicht nicht auf den Startvorgang, und sollten IGNORIERT werden" >> /home/$name/start.sh" >> /home/$name/1ststart.sh

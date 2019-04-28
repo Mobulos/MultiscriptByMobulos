@@ -9,8 +9,7 @@
 #################	         	 Script		        ##########################
 ##############################################################################
 
-#!/bin/bash
-# include this boilerplate
+
 function jumpto
 {
     label=$1
@@ -218,7 +217,5 @@ chown -R $name:$name /home/$name/*
 clear
 cd /home/$name
 su $name -c /home/$name/1ststart.sh
-#echo "Leider habe ich keinen Weg gefunden die Datei automatisch zu starten, daher:"
-#echo "Gebe  './1ststart.sh'  ein, um die Installation zu vervollständigen."
 su - $name
 exit

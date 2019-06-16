@@ -31,6 +31,7 @@ noubuntu=${10:-"noubuntu"}
 first=${11:-"first"}
 installall=${12:-"installall"}
 log=${13:-"log"}
+delete=${14:-"delete"}
 
 jumpto $install
 
@@ -40,7 +41,7 @@ clear
 read -p "Ist das dein erster start? (Ja/Nein) " first
 case $first in
 	Ja)
-    sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 update-ca-certificates unzip
+    sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 update-ca-certificates unzip screen
 	jumpto $installall
     ;;
 	
@@ -73,10 +74,11 @@ read -p "Hast du Ubuntu 18.04? (Ja/Nein) Falls du dir nicht sicher bist probiere
 menue:
 clear
 failedmenue:
-echo 1. Installieren
-echo 2. Script Updaten
-echo 3. Update-Log
-echo 4. Exit
+echo 1. Bot installieren
+echo 2. Bot löschen
+echo 3. Script Updaten
+echo 4. Update-Log
+echo 5. Exit
 echo Weitere Funktionen sind in Arbeit!
 read -p "Bot Befehle: " befehl
 case $befehl in
@@ -86,6 +88,10 @@ case $befehl in
 	 ;;
 	2)
 	 clear
+	 jumpto $delete
+	 ;;
+	3)
+	 clear
 	 rm MultiscriptByMobulos.sh
 	 wget 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh'
 	 chmod +x MultiscriptByMobulos.sh
@@ -93,19 +99,19 @@ case $befehl in
 	 echo Update abgeschlossen, du kannst das Script jetzt erneut starten!
 	 exit
 	 ;;
-	3)
+	4)
 	 clear
-	 echo "Update vom 16.3.2019:"
-	 echo "Neu Funktionen:"
-	 echo "	Der Bot kann jetzt neugestartet/gestoppt werden."
+	 echo "Update vom 16.6.2019:"
+	 echo "Verbesserungen:"
+	 echo " Das starten von Bots wurde verbessert:"
+	 echo "  Die Nachricht von Dateien, die nicht gelöscht werden konnten,"
+	 echo "  ist nun nicht mehr sichtbar"
 	 echo "Behobene Fehler:"
-	 echo " LogLevel Bug behoben."
-	 echo "	'/run/user/0 Zugriff verweigert' "
-	 echo "		Bot konnte sich nicht zum server verbinden."
-	 echo "Sonstiges:"
+	 echo " You are not the owner of /var/run/screen/S-bot1."
+	 echo "  Berechtigungs Fehler bei den Screens"
 	 jumpto $start
 	 ;;
-	4)
+	5)
 	 exit
 	 ;;
 	*)
@@ -154,10 +160,10 @@ echo "sudo rm /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
 echo "sudo mv sinusbot.current/* ." >> /home/$name/1ststart.sh
 echo "sudo rm sinusbot.current/" >> /home/$name/1ststart.sh
 
+sudo chown $name /var/run/screen/S-$name
 wget -P /home/$name/ 'http://server.mobulos.de/download/TeamSpeak3-Client-linux_amd64-3.2.3.run'
-echo "echo "sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
-echo "echo "sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
-echo "echo "echo Eventuelle Fehlermeldungen wirken sicht nicht auf den Startvorgang, und sollten IGNORIERT werden" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+echo "echo "screen -dmS delete sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+echo "echo "screen -dmS delete2 sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
 echo "echo "pkill screen" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
 echo "echo "clear" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
 echo "echo "pkill screen" >> /home/$name/restart.sh" >> /home/$name/1ststart.sh
@@ -186,6 +192,7 @@ echo Folgende Ports sind bereits belegt:
 cat ports
 read -p "Bitte einen neuen Port eingeben: " port
 echo "$port" >> ports
+echo "$port" >> /home/$name/port
 echo "echo 'Login: Deine IP Addresse:Port Dein Port $port' " >> /home/$name/1ststart.sh
 echo "echo "Zum Beispiel: 118.212.2.12:8087" " >> /home/$name/1ststart.sh
 echo "echo "Deine IP Addresse findest du ganz unten" " >> /home/$name/1ststart.sh
@@ -218,4 +225,15 @@ clear
 cd /home/$name
 su $name -c /home/$name/1ststart.sh
 su - $name
+exit
+
+delete:
+read -p "Welchen Bot möchtest du löschen? " name
+killall -u $name
+ports=$(cat /home/$name/port)
+sed -i '/^$ports/d' ports
+deluser $name
+rm -r /home/$name
+clear
+echo Der User wurde gelöscht
 exit

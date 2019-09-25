@@ -93,11 +93,13 @@ menue:
 failedmenue:
   echo "Version: 2.7.0"
   echo
-  echo 1. Bot installieren
-  echo 2. Bot löschen
-  echo 3. Script Updaten
-  echo 4. Update-Log
-  echo 5. Exit
+  echo "  1. Bot installieren"
+  echo "  2. Bot löschen"
+  echo "  3. Belegte Ports einsehen"
+  echo "  4. Script Updaten"
+  echo "  5. Update-Log"
+  echo "  6. Exit"
+  echo
   read -p "Bot Befehle: " befehl
   case $befehl in
   	1)
@@ -108,7 +110,16 @@ failedmenue:
   	 clear
   	 jumpto $delete
   	 ;;
-  	3)
+    3)
+     clear
+     echo "Folgende Ports sind belegt:"
+     echo
+     cat ports
+     echo
+     read -p "Drücke eine Taste, um fortzufahren"
+     jumpto $menue
+     ;;
+  	4)
      clear
      echo "BEENDE DAS SCRIPT UNTER KEINEN UMSTÄNDEN!"
      sleep 5
@@ -120,9 +131,12 @@ failedmenue:
   	 echo "Update abgeschlossen, du kannst das Script jetzt erneut starten!"
   	 exit
   	 ;;
-  	4)
+  	5)
   	 clear
   	 echo "Update vom 25.9.2019:"
+     echo
+     echo "Neues:"
+     echo " Du kannst dir nun die belegten Ports anzeigen lassen"
      echo
   	 echo "Verbesserungen:"
   	 echo " Die Abfrage: 'erster start' wurde automatisiert"
@@ -135,7 +149,7 @@ failedmenue:
      read -p "Drücke eine Taste, um fortzufahren"
   	 jumpto $start
   	 ;;
-  	5)
+  	6)
   	 exit
   	 ;;
   	*)
@@ -177,7 +191,7 @@ nein:
   adduser --gecos "" --disabled-password $name
   adduser $name sudo
   sh -c "echo '$name ALL=NOPASSWD: ALL' >> /etc/sudoers"
-  echo Erforderliche Daten werden herruntergeladen
+  echo "Erforderliche Daten werden herruntergeladen"
 
   wget -P /home/$name/ 'http://server.mobulos.de/download/sinusbot.current.zip'
   echo "sudo unzip /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh

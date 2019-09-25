@@ -69,6 +69,8 @@ install2:
 
 installall:
   clear
+  echo "Version: 2.7.0"  
+  echo
   read -p "Hast du Ubuntu 18.04? (Ja/Nein) Falls du dir nicht sicher bist probiere es mit 'Nein' " ubuntu
       case $ubuntu in
         Ja)

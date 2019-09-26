@@ -35,7 +35,10 @@ first=${11:-"first"}
 installall=${12:-"installall"}
 log=${13:-"log"}
 delete=${14:-"delete"}
-install2=${8:-"install2"}
+install2=${15:-"install2"}
+forward=${16:-"forward"}
+portfailed=${17:-"portfailed"}
+portsuccess=${18:-"portsuccess"}
 
 
 
@@ -45,10 +48,9 @@ if [ "$(id -u)" != "0" ]; then
    echo "Das Script muss als root gestartet werden." 1>&2
    exit 1
 fi
-
-
-
 jumpto $install
+
+
 
 
 install:
@@ -63,7 +65,8 @@ install:
 
 
 install2:
-  sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 update-ca-certificates unzip screen python
+  sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 update-ca-certificates unzip screen python curl
+  touch ports
   jumpto $installall
 
 
@@ -122,7 +125,7 @@ failedmenue:
   	4)
      clear
      echo "BEENDE DAS SCRIPT UNTER KEINEN UMSTÄNDEN!"
-     sleep 5
+     sleep 3
   	 clear
   	 rm MultiscriptByMobulos.sh
   	 wget 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh'
@@ -133,7 +136,7 @@ failedmenue:
   	 ;;
   	5)
   	 clear
-  	 echo "Update vom 25.9.2019:"
+  	 echo "Update vom 26.9.2019:"
      echo
      echo "Neues:"
      echo " Du kannst dir nun die belegten Ports anzeigen lassen"
@@ -144,7 +147,8 @@ failedmenue:
      echo " Script Verbesserungen für Script writer, wie mich(;"
      echo
   	 echo "Behobene Fehler:"
-  	 echo " Der Update-Log ist nun sichtbar(:"
+     echo " Der Update-Log ist nun sichtbar(:"
+     echo " Die Ports werden jetzt aus der Datei gelöscht"
      echo
      read -p "Drücke eine Taste, um fortzufahren"
   	 jumpto $start
@@ -227,9 +231,12 @@ nein:
   echo "echo "Username: Admin" " >> /home/$name/1ststart.sh
   echo "echo "Passwort: $pw" " >> /home/$name/1ststart.sh
   clear
+
+
   echo "Folgende Ports sind bereits belegt:"
   cat ports
   read -p "Bitte einen neuen Port eingeben: " port
+
   echo "$port" >> ports
   echo "$port" >> /home/$name/port
   echo "echo 'Login: Deine IP Addresse:Port Dein Port $port' " >> /home/$name/1ststart.sh
@@ -249,6 +256,7 @@ nein:
   echo "ListenHost = '0.0.0.0'" >> /home/$name/config2.ini.dist
   echo "LogLevel = 10" >> /home/$name/config2.ini.dist
   echo "TS3Path = '/home/$name/TeamSpeak3-Client-linux_amd64/ts3client_linux_amd64'" >> /home/$name/config2.ini.dist
+  echo "YoutubeDLPath = '/home/$name/youtube-dl'" >> /home/$name/config2.ini.dist
   echo "sudo chown -R $name:$name /home/$name" >> /home/$name/1ststart.sh
   echo "mv config2.ini.dist config.ini.dist" >> /home/$name/1ststart.sh
   echo "sudo cp config.ini.dist config.ini" >> /home/$name/1ststart.sh
@@ -265,9 +273,9 @@ nein:
   su $name -c /home/$name/1ststart.sh
 
   sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /home/$name/youtube-dl
-  chmod a+rx /home/$name/youtube-dl
+  sudo chmod a+rx /home/$name/youtube-dl
   /home/$name/youtube-dl -U
-  chmod 777 /home/$name/youtube-dl
+  sudo chmod 777 /home/$name/youtube-dl
 
 
   su - $name
@@ -276,8 +284,10 @@ nein:
 delete:
   read -p "Welchen Bot möchtest du löschen? " name
   killall -u $name
-  ports=$(cat /home/$name/port)
-  sed -i '/^$ports/d' ports
+  cat /home/$name/port
+  read -p "bitte gebe zur verifizierung die obenstehenden Zahlen ein " ports
+  grep -v "$ports" ports > ports2
+  mv ports2 ports
   deluser $name
   rm -r /home/$name
   clear

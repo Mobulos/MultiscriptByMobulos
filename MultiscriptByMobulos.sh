@@ -36,9 +36,6 @@ installall=${12:-"installall"}
 log=${13:-"log"}
 delete=${14:-"delete"}
 install2=${15:-"install2"}
-forward=${16:-"forward"}
-portfailed=${17:-"portfailed"}
-portsuccess=${18:-"portsuccess"}
 
 
 
@@ -139,16 +136,20 @@ failedmenue:
   	 echo "Update vom 26.9.2019:"
      echo
      echo "Neues:"
-     echo " Du kannst dir nun die belegten Ports anzeigen lassen"
+     echo " Du kannst dir nun die belegten Ports anzeigen lassen."
      echo
   	 echo "Verbesserungen:"
-  	 echo " Die Abfrage: 'erster start' wurde automatisiert"
-     echo " Ein paar Zeilen Code wurde für die schwer verständlichen geschrieben"
+  	 echo " Die Abfrage: 'erster start' wurde automatisiert."
+     echo " Ein paar Zeilen Code wurde für die schwer verständlichen geschrieben."
      echo " Script Verbesserungen für Script writer, wie mich(;"
+     echo " Die Wartezeit beim Updaten wurde auf 3 Sekunden verkürzt."
      echo
   	 echo "Behobene Fehler:"
      echo " Der Update-Log ist nun sichtbar(:"
-     echo " Die Ports werden jetzt aus der Datei gelöscht"
+     echo " Die Ports werden jetzt aus der Datei gelöscht."
+     echo " Der Youtube Downloader funktioniert nun wieder."
+     echo " Das Script erkennt nun vor der installation eines Bots,"
+     echo "   ob das Script bereits ausgeführt wurde."
      echo
      read -p "Drücke eine Taste, um fortzufahren"
   	 jumpto $start

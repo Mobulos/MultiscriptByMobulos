@@ -23,10 +23,7 @@ function jumpto
 
 menue=${1:-"menue"}
 start=${2:-"start"}
-ja=${3:-"ja"}
-nein=${4:-"nein"}
 failedmunue=${5:-"failedmenue"}
-failed=${6:-"failed"}
 menue=${7:-"menue"}
 install=${8:-"install"}
 ubuntu=${9:-"ubuntu"}
@@ -35,7 +32,6 @@ first=${11:-"first"}
 installall=${12:-"installall"}
 log=${13:-"log"}
 delete=${14:-"delete"}
-install2=${15:-"install2"}
 
 
 
@@ -45,25 +41,24 @@ if [ "$(id -u)" != "0" ]; then
    echo "Das Script muss als root gestartet werden." 1>&2
    exit 1
 fi
-jumpto $install
 
 
 
 
-install:
   clear
   file="ports"
   if [ ! -f "$file" ]
   then
-      jumpto install2
+      jumpto install
   fi
   jumpto menue
 
 
 
-install2:
+install:
   sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 update-ca-certificates unzip screen python curl
   touch ports
+  touch user
   jumpto $installall
 
 
@@ -95,7 +90,7 @@ failedmenue:
   echo
   echo "  1. Bot installieren"
   echo "  2. Bot löschen"
-  echo "  3. Belegte Ports einsehen"
+  echo "  3. Exsistierende nutzer anzeigen"
   echo "  4. Script Updaten"
   echo "  5. Update-Log"
   echo "  6. Exit"
@@ -112,9 +107,9 @@ failedmenue:
   	 ;;
     3)
      clear
-     echo "Folgende Ports sind belegt:"
+     echo "Folgende Benutzer exsistieren bereits:"
      echo
-     cat ports
+     cat user
      echo
      read -p "Drücke eine Taste, um fortzufahren"
      jumpto $menue
@@ -122,7 +117,7 @@ failedmenue:
   	4)
      clear
      echo "BEENDE DAS SCRIPT UNTER KEINEN UMSTÄNDEN!"
-     sleep 3
+     read -t 3
   	 clear
   	 rm MultiscriptByMobulos.sh
   	 wget 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh'
@@ -133,16 +128,17 @@ failedmenue:
   	 ;;
   	5)
   	 clear
-  	 echo "Update vom 26.9.2019:"
+  	 echo "Update vom 27.9.2019:"
      echo
      echo "Neues:"
-     echo " Du kannst dir nun die belegten Ports anzeigen lassen."
+     echo " Du kannst dir nun die belegten Ports und Nutzer anzeigen lassen."
      echo
   	 echo "Verbesserungen:"
   	 echo " Die Abfrage: 'erster start' wurde automatisiert."
      echo " Ein paar Zeilen Code wurde für die schwer verständlichen geschrieben."
      echo " Script Verbesserungen für Script writer, wie mich(;"
      echo " Die Wartezeit beim Updaten wurde auf 3 Sekunden verkürzt."
+     echo " Das anzeigen der Benutzer wurde auf Bot Nutzer beschränkt."
      echo
   	 echo "Behobene Fehler:"
      echo " Der Update-Log ist nun sichtbar(:"
@@ -150,9 +146,10 @@ failedmenue:
      echo " Der Youtube Downloader funktioniert nun wieder."
      echo " Das Script erkennt nun vor der installation eines Bots,"
      echo "   ob das Script bereits ausgeführt wurde."
+     echo " Du wirst nach dem Anzeigen des Update-Logs zum Menü geleitet und nicht zur Installation"
      echo
      read -p "Drücke eine Taste, um fortzufahren"
-  	 jumpto $start
+  	 jumpto $menue
   	 ;;
   	6)
   	 exit
@@ -160,7 +157,7 @@ failedmenue:
   	*)
   	 clear
   	 echo "Eingabe wird nicht Akzeptiert"
-     sleep 3
+     read -t 3
   	 jumpto $failedmenue
   	 ;;
   esac
@@ -168,29 +165,10 @@ failedmenue:
   start:
   clear
   echo "Es muss ein Benutzer angelegt werden!"
-  failed:
-  read -p "Sollen die Exsistierenden Benutzer angezeigt werden? (Ja/Nein): " jnuser
-  case $jnuser in
-    Ja)
-      clear
-      jumpto $ja
-      ;;
-    Nein)
-      clear
-      jumpto $nein
-      ;;
-    *)
-      clear
-      echo "Eingabe wird nicht Akzeptiert"
-      jumpto $failed
-      ;;
-  esac
-
-ja:
   echo "Exsistierende benutzer:"
-  cat /etc/passwd | cut -d: -f1
-
-nein:
+  echo
+  cat user
+  echo
   read -p "Wie soll der Bot heissen?: " name
 
   adduser --gecos "" --disabled-password $name
@@ -238,6 +216,7 @@ nein:
   cat ports
   read -p "Bitte einen neuen Port eingeben: " port
 
+  echo "$name:$port" >> user
   echo "$port" >> ports
   echo "$port" >> /home/$name/port
   echo "echo 'Login: Deine IP Addresse:Port Dein Port $port' " >> /home/$name/1ststart.sh
@@ -283,10 +262,19 @@ nein:
   exit
 
 delete:
+  echo "Exsistierende Benutzer:"
+  cat user
+  echo
+  echo "Mögliche Eigabe: bot1"
+  echo "Falsche Eingabe bot1:8087"
+  echo
   read -p "Welchen Bot möchtest du löschen? " name
   killall -u $name
+  clear
   cat /home/$name/port
-  read -p "bitte gebe zur verifizierung die obenstehenden Zahlen ein " ports
+  read -p "bitte gebe zur verifizierung die obenstehenden Zahlen ein: " ports
+  grep -v "$name:$ports" user > user2
+  mv user2 user
   grep -v "$ports" ports > ports2
   mv ports2 ports
   deluser $name

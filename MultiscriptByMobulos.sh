@@ -56,9 +56,10 @@ fi
 
 
 install:
-  sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 update-ca-certificates unzip screen python curl
+  sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 libpci3 libxslt1.1 libxkbcommon0 libglib2.0-0 libxss1 update-ca-certificates unzip screen python curl
   touch ports
   touch user
+  clear
   jumpto $installall
 
 
@@ -86,7 +87,7 @@ menue:
   clear
 
 failedmenue:
-  echo "Version: 2.7.0"
+  echo "Version: 2.7.1"
   echo
   echo "  1. Bot installieren"
   echo "  2. Bot löschen"
@@ -95,7 +96,7 @@ failedmenue:
   echo "  5. Update-Log"
   echo "  6. Exit"
   echo
-  read -p "Bot Befehle: " befehl
+  read -n 1 -p "Bot Befehle: " befehl
   case $befehl in
   	1)
   	 clear
@@ -128,30 +129,23 @@ failedmenue:
   	 ;;
   	5)
   	 clear
-  	 echo "Update vom 27.9.2019:"
+  	 echo "Update vom 30.10.2019:"
      echo
      echo "Neues:"
-     echo " Du kannst dir nun die belegten Ports und Nutzer anzeigen lassen."
+     echo " TS3 Client Update."
      echo
   	 echo "Verbesserungen:"
-  	 echo " Die Abfrage: 'erster start' wurde automatisiert."
-     echo " Ein paar Zeilen Code wurde für die schwer verständlichen geschrieben."
-     echo " Script Verbesserungen für Script writer, wie mich(;"
-     echo " Die Wartezeit beim Updaten wurde auf 3 Sekunden verkürzt."
-     echo " Das anzeigen der Benutzer wurde auf Bot Nutzer beschränkt."
+  	 echo " Unnötige Berechtigungen entfernt."
      echo
   	 echo "Behobene Fehler:"
-     echo " Der Update-Log ist nun sichtbar(:"
-     echo " Die Ports werden jetzt aus der Datei gelöscht."
-     echo " Der Youtube Downloader funktioniert nun wieder."
-     echo " Das Script erkennt nun vor der installation eines Bots,"
-     echo "   ob das Script bereits ausgeführt wurde."
-     echo " Du wirst nach dem Anzeigen des Update-Logs zum Menü geleitet und nicht zur Installation"
+     echo " Bot lies sich nicht mit dem Server verbinden."
+     echo " TS3 download."
      echo
      read -p "Drücke eine Taste, um fortzufahren"
   	 jumpto $menue
   	 ;;
   	6)
+    clear
   	 exit
   	 ;;
   	*)
@@ -183,7 +177,8 @@ failedmenue:
   echo "sudo rm sinusbot.current/" >> /home/$name/1ststart.sh
 
   sudo chown $name /var/run/screen/S-$name
-  wget -P /home/$name/ 'http://server.mobulos.de/download/TeamSpeak3-Client-linux_amd64-3.2.3.run'
+  # TS-CLient
+  wget -P /home/$name/ 'https://server.mobulos.de/download/TeamSpeak3-Client-linux_amd64-3.3.2.run'
   echo "echo "screen -dmS delete sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
   echo "echo "screen -dmS delete2 sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
   echo "echo "pkill screen" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
@@ -194,43 +189,50 @@ failedmenue:
 
 
   clear
-  echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64-3.2.3.run" >> /home/$name/1ststart.sh
+  # TS-Client
+  echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64-3.3.2.run" >> /home/$name/1ststart.sh
   echo "clear" >> /home/$name/1ststart.sh
   echo "echo Zum akzeptieren 'ENTER', 'q', 'y' und 'ENTER' drücken" >> /home/$name/1ststart.sh
   echo "echo" >> /home/$name/1ststart.sh
   echo "echo -----------------------------------------------------" >> /home/$name/1ststart.sh
-  echo "/home/$name/TeamSpeak3-Client-linux_amd64-3.2.3.run" >> /home/$name/1ststart.sh
+  # TS-Client
+  echo "/home/$name/TeamSpeak3-Client-linux_amd64-3.3.2.run" >> /home/$name/1ststart.sh
 
   read -p "Bitte erstelle ein Passwort fuer den Sinusbot: " pw
+  clear
+
+  echo "Folgende Ports sind bereits belegt:"
+  cat ports
+  read -n 4 -p "Bitte einen neuen Port eingeben: " port
+
+  clear
   echo "echo "screen -dmS $name ./sinusbot --override-password=$pw" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
   echo "sudo chmod u+x /home/$name/start.sh" >> /home/$name/1ststart.sh
   echo "clear" >> /home/$name/1ststart.sh
   echo "echo Du kannst den Bot ab jetzt mit dem Befehl "./start.sh" starten" >> /home/$name/1ststart.sh
-  echo "echo "Login Daten:" " >> /home/$name/1ststart.sh
-  echo "echo "Username: Admin" " >> /home/$name/1ststart.sh
-  echo "echo "Passwort: $pw" " >> /home/$name/1ststart.sh
+  echo "echo" >> /home/$name/1ststart.sh
+  echo "echo Login Daten: " >> /home/$name/1ststart.sh
+  echo "curl ifconfig.me;echo :$port" >> /home/$name/1ststart.sh
+  echo "echo" >> /home/$name/1ststart.sh
+  echo "echo Username:" >> /home/$name/1ststart.sh
+  echo "echo "Admin" " >> /home/$name/1ststart.sh
+  echo "echo" >> /home/$name/1ststart.sh
+  echo "echo Passwort: " >> /home/$name/1ststart.sh
+  echo "echo "$pw" " >> /home/$name/1ststart.sh
+  echo "echo" >> /home/$name/1ststart.sh
   clear
 
 
-  echo "Folgende Ports sind bereits belegt:"
-  cat ports
-  read -p "Bitte einen neuen Port eingeben: " port
 
   echo "$name:$port" >> user
   echo "$port" >> ports
   echo "$port" >> /home/$name/port
-  echo "echo 'Login: Deine IP Addresse:Port Dein Port $port' " >> /home/$name/1ststart.sh
-  echo "echo "Zum Beispiel: 118.212.2.12:8087" " >> /home/$name/1ststart.sh
-  echo "echo "Deine IP Addresse findest du ganz unten" " >> /home/$name/1ststart.sh
-  echo "echo "inet DEINEIPADDRESSE" " >> /home/$name/1ststart.sh
-  echo "echo" >> /home/$name/1ststart.sh
-  echo "echo" >> /home/$name/1ststart.sh
-  echo "ip addr show" >> /home/$name/1ststart.sh
+  echo "port=$port" >> /home/$name/1ststart.sh
   chmod u+x /home/$name/1ststart.sh
   echo "sudo chmod u+x /home/$name/stop.sh" >> /home/$name/1ststart.sh
   echo "sudo chmod u+x /home/$name/restart.sh" >> /home/$name/1ststart.sh
-  echo "sudo chmod u+x /home/$name/sinusbot" >> /home/$name/1ststart.sh
-  echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64/ts3client_runscript.sh" >> /home/$name/1ststart.sh
+  echo "sudo chmod 755 /home/$name/sinusbot" >> /home/$name/1ststart.sh
+  echo "sudo chmod -R u+rwx /home/$name/TeamSpeak3-Client-linux_amd64" >> /home/$name/1ststart.sh
 
   echo "ListenPort = $port " > /home/$name/config2.ini.dist
   echo "ListenHost = '0.0.0.0'" >> /home/$name/config2.ini.dist
@@ -243,7 +245,7 @@ failedmenue:
 
   echo "sudo rm /home/$name/TeamSpeak3-Client-linux_amd64/xcbglintegrations/libqxcb-glx-integration.so" >> /home/$name/1ststart.sh
   echo "sudo mkdir /home/$name/TeamSpeak3-Client-linux_amd64/plugins" >> /home/$name/1ststart.sh
-  echo "sudo cp /home/$name/plugin/libsoundbot_plugin.so /home/$name/TeamSpeak3-Client-linux_amd64/plugins/" >> /home/$name/1ststart.sh
+  echo "sudo cp /home/$name/plugin/libsoundbot_plugin.so /home/$name/TeamSpeak3-Client-linux_amd64/plugins/." >> /home/$name/1ststart.sh
   echo "sudo chown -R $name:$name /home/$name/*" >> /home/$name/1ststart.sh
   echo "rm /home/$name/1ststart.sh" >> /home/$name/1ststart.sh
 
@@ -272,7 +274,7 @@ delete:
   killall -u $name
   clear
   cat /home/$name/port
-  read -p "bitte gebe zur verifizierung die obenstehenden Zahlen ein: " ports
+  read -n 4 -p "bitte gebe zur verifizierung die obenstehenden Zahlen ein: " ports
   grep -v "$name:$ports" user > user2
   mv user2 user
   grep -v "$ports" ports > ports2

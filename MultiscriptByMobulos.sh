@@ -56,7 +56,7 @@ fi
 
 
 install:
-  sudo apt-get update && apt-get install -y x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1-mesa x11-xkb-utils libasound2 libpci3 libxslt1.1 libxkbcommon0 libglib2.0-0 libxss1 update-ca-certificates unzip screen python curl
+  sudo apt-get update && apt-get install -y x11vnc && apt-get install -y xvfb && apt-get install -y libxcursor1 && apt-get install -y ca-certificates && apt-get install -y bzip2 && apt-get install -y libnss3 && apt-get install -y libegl1-mesa && apt-get install -y x11-xkb-utils && apt-get install -y libasound2 && apt-get install -y libpci3 && apt-get install -y libxslt1.1 && apt-get install -y libxkbcommon0 && apt-get install -y libglib2.0-0 && apt-get install -y libxss1 && apt-get install -y update-ca-certificates && apt-get install -y unzip && apt-get install -y screen && apt-get install -y python && apt-get install -y curl
   touch ports
   touch user
   clear
@@ -87,7 +87,7 @@ menue:
   clear
 
 failedmenue:
-  echo "Version: 2.7.1"
+  echo "Version: 2.7.2"
   echo
   echo "  1. Bot installieren"
   echo "  2. Bot löschen"
@@ -129,13 +129,15 @@ failedmenue:
   	 ;;
   	5)
   	 clear
-  	 echo "Update vom 30.10.2019:"
+  	 echo "Update vom 01.11.2019:"
      echo
      echo "Neues:"
      echo " TS3 Client Update."
      echo
   	 echo "Verbesserungen:"
   	 echo " Unnötige Berechtigungen entfernt."
+     echo " Das Script ist nun nicht mehr von meinen Servern abhängig."
+     echo " Folgen der Fehler beim Installieren von Paketen gelindert."
      echo
   	 echo "Behobene Fehler:"
      echo " Bot lies sich nicht mit dem Server verbinden."
@@ -170,7 +172,7 @@ failedmenue:
   sh -c "echo '$name ALL=NOPASSWD: ALL' >> /etc/sudoers"
   echo "Erforderliche Daten werden herruntergeladen"
 
-  wget -P /home/$name/ 'http://server.mobulos.de/download/sinusbot.current.zip'
+  wget -P /home/$name/ 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos_download/master/sinusbot.current.zip'
   echo "sudo unzip /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
   echo "sudo rm /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
   echo "sudo mv sinusbot.current/* ." >> /home/$name/1ststart.sh
@@ -178,7 +180,7 @@ failedmenue:
 
   sudo chown $name /var/run/screen/S-$name
   # TS-CLient
-  wget -P /home/$name/ 'https://server.mobulos.de/download/TeamSpeak3-Client-linux_amd64-3.3.2.run'
+  wget -P /home/$name/ 'https://files.teamspeak-services.com/releases/client/3.3.2/TeamSpeak3-Client-linux_amd64-3.3.2.run'
   echo "echo "screen -dmS delete sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
   echo "echo "screen -dmS delete2 sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
   echo "echo "pkill screen" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh

@@ -180,7 +180,7 @@ failedmenue:
 
   sudo chown $name /var/run/screen/S-$name
   # TS-CLient
-  wget -P /home/$name/ 'https://files.teamspeak-services.com/releases/client/3.3.2/TeamSpeak3-Client-linux_amd64-3.3.2.run'
+  wget -P /home/$name/ 'https://files.teamspeak-services.com/releases/client/3.5.3/TeamSpeak3-Client-linux_amd64-3.5.3.run'
   echo "echo "screen -dmS delete sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
   echo "echo "screen -dmS delete2 sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
   echo "echo "pkill screen" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
@@ -192,13 +192,13 @@ failedmenue:
 
   clear
   # TS-Client
-  echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64-3.3.2.run" >> /home/$name/1ststart.sh
+  echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
   echo "clear" >> /home/$name/1ststart.sh
   echo "echo Zum akzeptieren 'ENTER', 'q', 'y' und 'ENTER' drücken" >> /home/$name/1ststart.sh
   echo "echo" >> /home/$name/1ststart.sh
   echo "echo -----------------------------------------------------" >> /home/$name/1ststart.sh
   # TS-Client
-  echo "/home/$name/TeamSpeak3-Client-linux_amd64-3.3.2.run" >> /home/$name/1ststart.sh
+  echo "/home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
 
   read -p "Bitte erstelle ein Passwort fuer den Sinusbot: " pw
   clear

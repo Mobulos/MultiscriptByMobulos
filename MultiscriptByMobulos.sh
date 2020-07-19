@@ -88,7 +88,7 @@ menue:
   clear
 
 failedmenue:
-  echo "Version: 3.0.2"
+  echo "Version: 3.0.4"
   echo
   echo "  1. Bot installieren"
   echo "  2. Bot löschen"
@@ -170,7 +170,8 @@ installscripts:
     read -t 0.5
     read -n1 -p "Willst du diese Scripts installieren? (Y|N) " scripts
     case $scripts in
-    y | Y | j | J )
+    Y | y | J | j)
+		clear
         echo "Exsistierende benutzer:"
         echo
         cat user
@@ -185,11 +186,12 @@ installscripts:
         echo "cd /home/$name/scripts/" >> /home/$name/scriptinstall.sh
         echo "sudo unzip /home/$name/scripts/scriptspack.zip" >> /home/$name/scriptinstall.sh
         echo "rm scripts/scriptspack.zip" >> /home/$name/scriptinstall.sh
-        echo "sudo rm scriptinstall.sh" >> /home/$name/scriptinstall.sh
+        echo "sudo rm /home/$name/scriptinstall.sh" >> /home/$name/scriptinstall.sh
         echo "clear" >> /home/$name/scriptinstall.sh
         echo "echo 'Die Plugins wurden nun installiert!'" >> /home/$name/scriptinstall.sh
         echo "exit" >> /home/$name/scriptinstall.sh
         clear
+        chmod 777 /home/$name/scriptinstall.sh
         echo "Bitte gebe nun './scriptinstall.sh' ein"
         su - $name
         exit
@@ -197,7 +199,9 @@ installscripts:
     n|N)
     clear
     echo "Das Script wird nun beendet!"
+	exit
     ;;
+	esac
     exit
 
 

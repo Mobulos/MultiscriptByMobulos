@@ -32,6 +32,7 @@ first=${11:-"first"}
 installall=${12:-"installall"}
 log=${13:-"log"}
 delete=${14:-"delete"}
+installscripts=${15:-"installscripts"}
 
 
 
@@ -87,78 +88,120 @@ menue:
   clear
 
 failedmenue:
-  echo "Version: 2.7.2"
+  echo "Version: 3.0.2"
   echo
   echo "  1. Bot installieren"
   echo "  2. Bot löschen"
-  echo "  3. Exsistierende nutzer anzeigen"
-  echo "  4. Script Updaten"
-  echo "  5. Update-Log"
+  echo "  3. Scripts installieren"
+  echo "  4. Exsistierende nutzer anzeigen"
+  echo "  5. Script Updaten"
   echo "  6. Exit"
   echo
   read -n 1 -p "Bot Befehle: " befehl
   case $befehl in
   	1)
-  	 clear
-  	 jumpto $start
+        clear
+        jumpto $start
   	 ;;
   	2)
-  	 clear
-  	 jumpto $delete
+        clear
+        jumpto $delete
   	 ;;
     3)
-     clear
-     echo "Folgende Benutzer exsistieren bereits:"
-     echo
-     cat user
-     echo
-     read -p "Drücke eine Taste, um fortzufahren"
-     jumpto $menue
+        clear
+        jumpto $installscripts
+        exit
      ;;
-  	4)
-     clear
-     echo "BEENDE DAS SCRIPT UNTER KEINEN UMSTÄNDEN!"
-     read -t 3
-  	 clear
-  	 rm MultiscriptByMobulos.sh
-  	 wget 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh'
-  	 chmod +x MultiscriptByMobulos.sh
-  	 clear
-  	 echo "Update abgeschlossen, du kannst das Script jetzt erneut starten!"
-  	 exit
-  	 ;;
+    4)
+        clear
+        echo "Folgende Benutzer exsistieren bereits:"
+        echo
+        cat user
+        echo
+        read -p "Drücke eine Taste, um fortzufahren"
+        jumpto $menue
+     ;;
   	5)
-  	 clear
-  	 echo "Update vom 01.11.2019:"
-     echo
-     echo "Neues:"
-     echo " TS3 Client Update."
-     echo
-  	 echo "Verbesserungen:"
-  	 echo " Unnötige Berechtigungen entfernt."
-     echo " Das Script ist nun nicht mehr von meinen Servern abhängig."
-     echo " Folgen der Fehler beim Installieren von Paketen gelindert."
-     echo
-  	 echo "Behobene Fehler:"
-     echo " Bot lies sich nicht mit dem Server verbinden."
-     echo " TS3 download."
-     echo
-     read -p "Drücke eine Taste, um fortzufahren"
-  	 jumpto $menue
+        clear
+        echo "BEENDE DAS SCRIPT UNTER KEINEN UMSTÄNDEN!"
+        read -t 3
+        clear
+        rm MultiscriptByMobulos.sh
+        wget 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh'
+        chmod +x MultiscriptByMobulos.sh
+        clear
+        echo "Update abgeschlossen, du kannst das Script jetzt erneut starten!"
+        exit
   	 ;;
   	6)
-    clear
-  	 exit
+        clear
+        exit
   	 ;;
   	*)
-  	 clear
-  	 echo "Eingabe wird nicht Akzeptiert"
-     read -t 3
-  	 jumpto $failedmenue
+        clear
+        echo "Eingabe wird nicht Akzeptiert"
+        read -t 3
+        jumpto $failedmenue
   	 ;;
   esac
 
-  start:
+
+installscripts:
+    clear
+    echo "Diese Funktion ist noch in entwicklung."
+    echo 
+    echo "Bisher lassen sich follgende Scripts auf einmal installieren:"
+    read -t 0.5
+    echo "  Auto-Channel-Creator"
+    read -t 0.5
+    echo "  CountOnlineUsers"
+    read -t 0.5
+    echo "  expandingChannel"
+    read -t 0.5
+    echo "  slim-online-sheriff"
+    read -t 0.5
+    echo "  SpamControl"
+    read -t 0.5
+    echo "  Sticky_Channel"
+    read -t 0.5
+    echo "  Support pp"
+    echo
+    echo
+    read -t 0.5
+    read -n1 -p "Willst du diese Scripts installieren? (Y|N) " scripts
+    case $scripts in
+    y | Y | j | J )
+        echo "Exsistierende benutzer:"
+        echo
+        cat user
+        echo
+        read -p "Für welchen Bot sollen die Scripts installiert werden?: " name
+        for del in Support.js Sticky_Channel.js SpamControl.js slim-online-sheriff.js expandingChannel.js CountOnlineUsers.js Auto_Channel_Creator.js
+        do
+            rm /home/$name/scripts/$del
+        done
+        rm -r /home/$name/scripts/SpamControl
+        wget -P /home/$name/scripts/ "https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos_download/master/scriptspack.zip"
+        echo "cd /home/$name/scripts/" >> /home/$name/scriptinstall.sh
+        echo "sudo unzip /home/$name/scripts/scriptspack.zip" >> /home/$name/scriptinstall.sh
+        echo "rm scripts/scriptspack.zip" >> /home/$name/scriptinstall.sh
+        echo "sudo rm scriptinstall.sh" >> /home/$name/scriptinstall.sh
+        echo "clear" >> /home/$name/scriptinstall.sh
+        echo "echo 'Die Plugins wurden nun installiert!'" >> /home/$name/scriptinstall.sh
+        echo "exit" >> /home/$name/scriptinstall.sh
+        clear
+        echo "Bitte gebe nun './scriptinstall.sh' ein"
+        su - $name
+        exit
+    ;;
+    n|N)
+    clear
+    echo "Das Script wird nun beendet!"
+    ;;
+    exit
+
+
+start:
   clear
   echo "Es muss ein Benutzer angelegt werden!"
   echo "Exsistierende benutzer:"

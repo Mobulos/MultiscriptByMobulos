@@ -1,4 +1,4 @@
 # MultiscriptByMobulos
 
-Get started:
-- Einfach Rechte geben und starten. "chmod +x MultiscriptByMobulos.sh && ./MultiscriptByMobulos.sh"
+You wont need this branche.
+Instead, go to the master branche: https://github.com/Mobulos/MultiscriptByMobulos/tree/master

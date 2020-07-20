@@ -94,7 +94,7 @@ menue:
   clear
 
 failedmenue:
-  echo "Version: 3.0.7"
+  echo "Version: 3.0.8"
   echo
   echo "  1. Bot installieren"
   echo "  2. Bot löschen"
@@ -196,10 +196,38 @@ installscripts:
         echo "sudo rm /home/$name/scripts/scriptspack-latest.zip" >> /home/$name/scriptinstall.sh
         echo "sudo rm /home/$name/scriptinstall.sh" >> /home/$name/scriptinstall.sh
         echo "clear" >> /home/$name/scriptinstall.sh
-        echo "echo 'Die Plugins wurden nun installiert!'" >> /home/$name/scriptinstall.sh
-        echo "exit" >> /home/$name/scriptinstall.sh
         clear
         sudo chmod 777 /home/$name/scriptinstall.sh
+        clear
+        echo "Ich kann zusätzlich noch Scripts löschen, die in den meisten Fällen nicht benötigt werden."
+        echo "Diese Scripts würden gelöscht werden:"
+        for i in advertising alonemode bookmark followme norecording rememberChannel welcome
+        do
+            echo
+            echo "  $i"
+            read -t 0.5
+        done
+        echo
+        echo
+        echo "Die Script können im nachhinein erneut installiert werden"
+        read -n1 -p "Soll ich ausserdem follgende Scripts LÖSCHEN? (Y|N)" scriptsdel
+        case $scriptsdel in
+            Y | y | J | j)
+            clear
+            for i in advertising.js alonemode.js bookmark.js followme.js norecording.js rememberChannel.js welcome.js
+            do
+                sudo rm /home/$name/scripts/$i
+            done
+            echo "Ausserdem wurde 'unnötige' Scripts entfernt!" >> /home/$name/scriptinstall.sh
+            clear
+            ;;
+            n|N)
+            echo "Es wurde keine weiteren Scripts gelöscht!" >> /home/$name/scriptinstall.sh
+            clear
+            ;;
+        esac
+        echo "echo 'Die Plugins wurden nun installiert!'" >> /home/$name/scriptinstall.sh
+        echo "exit" >> /home/$name/scriptinstall.sh
         echo "Bitte gebe nun './scriptinstall.sh' ein"
         su - $name
         exit

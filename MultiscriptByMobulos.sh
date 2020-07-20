@@ -94,7 +94,7 @@ menue:
   clear
 
 failedmenue:
-  echo "Version: 3.0.9"
+  echo "Version: 3.1.0"
   echo
   echo "  1. Bot installieren"
   echo "  2. Bot löschen"
@@ -157,22 +157,12 @@ installscripts:
     echo "Diese Funktion ist noch in entwicklung."
     echo 
     echo "Bisher lassen sich follgende Scripts auf einmal installieren:"
-    read -t 0.5
-    echo "  Auto-Channel-Creator"
-    read -t 0.5
-    echo "  CountOnlineUsers"
-    read -t 0.5
-    echo "  expandingChannel"
-    read -t 0.5
-    echo "  slim-online-sheriff"
-    read -t 0.5
-    echo "  SpamControl"
-    read -t 0.5
-    echo "  Sticky_Channel"
-    read -t 0.5
-    echo "  Support pp"
-    read -t 0.5
-    echo "  saveCPU"
+    echo
+    for i in Auto-Channel-Creator CountOnlineUsers expandingChannel slim-online-sheriff SpamControl Sticky_Channel Support-pp saveCPU
+    do
+        read -t 0.5
+        echo "  $i"
+    done
     echo
     echo
     read -t 0.5
@@ -211,7 +201,7 @@ installscripts:
         echo
         echo
         echo "Die Script können im nachhinein erneut installiert werden"
-        read -n1 -p "Soll ich diese Scripts LÖSCHEN? (Y|N)" scriptsdel
+        read -n1 -p "Soll ich sie  LÖSCHEN? (Y|N)" scriptsdel
         case $scriptsdel in
             Y | y | J | j)
             clear

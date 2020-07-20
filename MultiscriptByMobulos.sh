@@ -94,7 +94,7 @@ menue:
   clear
 
 failedmenue:
-  echo "Version: 3.0.6"
+  echo "Version: 3.0.7"
   echo
   echo "  1. Bot installieren"
   echo "  2. Bot löschen"
@@ -190,7 +190,7 @@ installscripts:
             rm /home/$name/scripts/$del
         done
         rm -r /home/$name/scripts/SpamControl
-        wget -P /home/$name/scripts/ "https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos_download/master/scriptspack-latest.zip"
+        wget -P /home/$name/scripts/ "https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/download/scriptspack-latest.zip"
         echo "cd /home/$name/scripts/" >> /home/$name/scriptinstall.sh
         echo "sudo unzip /home/$name/scripts/scriptspack-latest.zip" >> /home/$name/scriptinstall.sh
         echo "sudo rm /home/$name/scripts/scriptspack-latest.zip" >> /home/$name/scriptinstall.sh
@@ -227,7 +227,7 @@ start:
   sh -c "echo '$name ALL=NOPASSWD: ALL' >> /etc/sudoers"
   echo "Erforderliche Daten werden herruntergeladen"
 
-  wget -P /home/$name/ 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos_download/master/sinusbot.current.zip'
+  wget -P /home/$name/ 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/download/sinusbot.current.zip'
   echo "sudo unzip /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
   echo "sudo rm /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
   echo "sudo mv sinusbot.current/* ." >> /home/$name/1ststart.sh

@@ -9,8 +9,6 @@ on:
     branch:
       - master
 
-name: ShellCheck
-
 jobs:
   shellcheck:
     name: Shellcheck

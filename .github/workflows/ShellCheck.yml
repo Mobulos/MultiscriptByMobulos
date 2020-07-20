@@ -16,4 +16,6 @@ jobs:
     steps:
       - uses: lumaxis/shellcheck-problem-matchers@v1
       - run: shellcheck -f gcc *.sh
-       format: gcc
+      - uses: lumaxis/shellcheck-problem-matchers@v1
+          with:
+             format: gcc # Available options are "gcc" or "tty"

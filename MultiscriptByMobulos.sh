@@ -17,7 +17,7 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.1.1
+ver=3.1.2
 dat=20.07.2020
 file=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
@@ -152,7 +152,7 @@ failedmenue:
         read -t 3
         clear
         rm $file
-        wget '$link'
+        wget $link
         chmod +x $file
         clear
         echo "Update abgeschlossen, du kannst das Script jetzt erneut starten!"

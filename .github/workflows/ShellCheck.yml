@@ -6,13 +6,13 @@ name: Shellcheck Problem Matchers
 # events but only for the master branch
 on:
   push:
-    branch:
+    branches:
       - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    uses: lumaxis/shellcheck-problem-matchers@v1
+    
     steps:
-      
-      run: shellcheck -f gcc *.sh
+      - uses: lumaxis/shellcheck-problem-matchers@v1
+      - run: shellcheck -f gcc *.sh

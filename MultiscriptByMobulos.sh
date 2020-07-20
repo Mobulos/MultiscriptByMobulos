@@ -8,9 +8,27 @@
 #
 # Wer gegen das Urheberrecht verstößt (z.B. Texte unerlaubt kopiert), macht sich gem. §§ 106 ff UrhG strafbar, wird zudem kostenpflichtig abgemahnt und muss Schadensersatz leisten (§ 97 UrhG).
 #
-##############################################################################
-#################	            	 Script		          ##########################
-##############################################################################
+################################################################
+#################	            	 Script		           ##########################
+################################################################
+
+
+
+
+############################################
+################# CHANGE ###################
+ver=3.1.1
+dat=20.07.2020
+file=MultiscriptByMobulos.sh
+link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
+
+### INSTALL ###
+install="x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1 x11-xkb-utils libasound2 libpci3 libxslt1.1 libxkbcommon0 libglib2.0-0 libxss1 update-ca-certificates unzip screen python curl wget sudo"
+### INSTALL ###
+
+############################################
+############################################
+
 
 
 function jumpto
@@ -59,7 +77,7 @@ fi
 install:
     sudo apt-get update
     clear
-    for i in x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1 x11-xkb-utils libasound2 libpci3 libxslt1.1 libxkbcommon0 libglib2.0-0 libxss1 update-ca-certificates unzip screen python curl wget sudo
+    for i in $install
     do
     sudo apt-get install -y $i
     clear
@@ -94,7 +112,8 @@ menue:
   clear
 
 failedmenue:
-  echo "Version: 3.1.0"
+  echo "Version: $ver"
+  echo "Update vom: $dat"
   echo
   echo "  1. Bot installieren"
   echo "  2. Bot löschen"
@@ -132,9 +151,9 @@ failedmenue:
         echo "BEENDE DAS SCRIPT UNTER KEINEN UMSTÄNDEN!"
         read -t 3
         clear
-        rm MultiscriptByMobulos.sh
-        wget 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh'
-        chmod +x MultiscriptByMobulos.sh
+        rm $file
+        wget '$link'
+        chmod +x $file
         clear
         echo "Update abgeschlossen, du kannst das Script jetzt erneut starten!"
         exit

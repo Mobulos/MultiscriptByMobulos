@@ -57,11 +57,17 @@ fi
 
 
 install:
-  sudo apt-get update && apt-get install -y x11vnc && apt-get install -y xvfb && apt-get install -y libxcursor1 && apt-get install -y ca-certificates && apt-get install -y bzip2 && apt-get install -y libnss3 && apt-get install -y libegl1-mesa && apt-get install -y x11-xkb-utils && apt-get install -y libasound2 && apt-get install -y libpci3 && apt-get install -y libxslt1.1 && apt-get install -y libxkbcommon0 && apt-get install -y libglib2.0-0 && apt-get install -y libxss1 && apt-get install -y update-ca-certificates && apt-get install -y unzip && apt-get install -y screen && apt-get install -y python && apt-get install -y curl
-  touch ports
-  touch user
-  clear
-  jumpto $installall
+    sudo apt-get update
+    clear
+    for i in x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1 x11-xkb-utils libasound2 libpci3 libxslt1.1 libxkbcommon0 libglib2.0-0 libxss1 update-ca-certificates unzip screen python curl wget sudo
+    do
+    sudo apt-get install -y $i
+    clear
+    done
+    touch ports
+    touch user
+    clear
+    jumpto $installall
 
 
 installall:
@@ -88,7 +94,7 @@ menue:
   clear
 
 failedmenue:
-  echo "Version: 3.0.4"
+  echo "Version: 3.0.5"
   echo
   echo "  1. Bot installieren"
   echo "  2. Bot löschen"
@@ -165,6 +171,8 @@ installscripts:
     echo "  Sticky_Channel"
     read -t 0.5
     echo "  Support pp"
+    read -t 0.5
+    echo "  saveCPU"
     echo
     echo
     read -t 0.5
@@ -177,21 +185,20 @@ installscripts:
         cat user
         echo
         read -p "Für welchen Bot sollen die Scripts installiert werden?: " name
-        for del in Support.js Sticky_Channel.js SpamControl.js slim-online-sheriff.js expandingChannel.js CountOnlineUsers.js Auto_Channel_Creator.js
+        for del in Support.js Sticky_Channel.js SpamControl.js slim-online-sheriff.js expandingChannel.js CountOnlineUsers.js Auto_Channel_Creator.js saveCPU.js
         do
             rm /home/$name/scripts/$del
         done
         rm -r /home/$name/scripts/SpamControl
-        wget -P /home/$name/scripts/ "https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos_download/master/scriptspack.zip"
-        echo "cd /home/$name/scripts/" >> /home/$name/scriptinstall.sh
-        echo "sudo unzip /home/$name/scripts/scriptspack.zip" >> /home/$name/scriptinstall.sh
-        echo "rm scripts/scriptspack.zip" >> /home/$name/scriptinstall.sh
+        wget -P /home/$name/scripts/ "https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos_download/master/scriptspack-latest.zip"
+        echo "sudo unzip /home/$name/scripts/scriptspack-latest.zip" >> /home/$name/scriptinstall.sh
+        echo "sudo rm /home/$name/scripts/scriptspack-latest.zip" >> /home/$name/scriptinstall.sh
         echo "sudo rm /home/$name/scriptinstall.sh" >> /home/$name/scriptinstall.sh
         echo "clear" >> /home/$name/scriptinstall.sh
         echo "echo 'Die Plugins wurden nun installiert!'" >> /home/$name/scriptinstall.sh
         echo "exit" >> /home/$name/scriptinstall.sh
         clear
-        chmod 777 /home/$name/scriptinstall.sh
+        sudo chmod 777 /home/$name/scriptinstall.sh
         echo "Bitte gebe nun './scriptinstall.sh' ein"
         su - $name
         exit

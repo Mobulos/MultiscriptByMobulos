@@ -10,6 +10,8 @@ on:
       - master
 
 jobs:
-  shellcheck:
-      name: Shellcheck Problem Matchers
-      uses: lumaxis/shellcheck-problem-matchers@v1.1.2
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: lumaxis/shellcheck-problem-matchers@v1
+      run: shellcheck -f gcc *.sh

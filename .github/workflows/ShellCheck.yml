@@ -16,4 +16,4 @@ jobs:
     steps:
       - uses: lumaxis/shellcheck-problem-matchers@v1
       - run: shellcheck -f gcc *.sh
-         - format: gcc
+       format: gcc

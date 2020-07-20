@@ -17,7 +17,7 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.1.3
+ver=3.1.4
 dat=20.07.2020
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
@@ -216,7 +216,7 @@ installscripts:
             echo "  $i"
             read -t 0.5
         done
-        echo "echo 'Die Plugins wurden nun installiert!'" >> /home/$name/scriptinstall.sh
+        echo "echo 'Die Scripts wurden nun installiert!'" >> /home/$name/scriptinstall.sh
         echo
         echo
         echo "Die Script können im nachhinein erneut installiert werden"

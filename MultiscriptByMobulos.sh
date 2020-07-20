@@ -17,9 +17,9 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.1.2
+ver=3.1.3
 dat=20.07.2020
-file=MultiscriptByMobulos.sh
+filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
 
 ### INSTALL ###
@@ -151,9 +151,9 @@ failedmenue:
         echo "BEENDE DAS SCRIPT UNTER KEINEN UMSTÄNDEN!"
         read -t 3
         clear
-        rm $file
+        rm $filescript
         wget $link
-        chmod +x $file
+        chmod +x $filescript
         clear
         echo "Update abgeschlossen, du kannst das Script jetzt erneut starten!"
         exit

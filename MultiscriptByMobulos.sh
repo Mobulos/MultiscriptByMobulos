@@ -94,7 +94,7 @@ menue:
   clear
 
 failedmenue:
-  echo "Version: 3.0.5"
+  echo "Version: 3.0.6"
   echo
   echo "  1. Bot installieren"
   echo "  2. Bot löschen"
@@ -191,6 +191,7 @@ installscripts:
         done
         rm -r /home/$name/scripts/SpamControl
         wget -P /home/$name/scripts/ "https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos_download/master/scriptspack-latest.zip"
+        echo "cd /home/$name/scripts/" >> /home/$name/scriptinstall.sh
         echo "sudo unzip /home/$name/scripts/scriptspack-latest.zip" >> /home/$name/scriptinstall.sh
         echo "sudo rm /home/$name/scripts/scriptspack-latest.zip" >> /home/$name/scriptinstall.sh
         echo "sudo rm /home/$name/scriptinstall.sh" >> /home/$name/scriptinstall.sh

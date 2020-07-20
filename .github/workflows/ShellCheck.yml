@@ -11,5 +11,5 @@ on:
 
 jobs:
   shellcheck:
-    - name: Shellcheck Problem Matchers
+      name: Shellcheck Problem Matchers
       uses: lumaxis/shellcheck-problem-matchers@v1.1.2

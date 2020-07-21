@@ -17,10 +17,14 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.1.4
-dat=20.07.2020
+ver=3.1.5
+dat=21.07.2020
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
+scriptvar=Auto-Channel-Creator CountOnlineUsers expandingChannel slim-online-sheriff SpamControl Sticky_Channel Support-pp saveCPU nickCrashHelper registerNotificator
+scriptjsvar=Auto-Channel-Creator.js CountOnlineUsers.js expandingChannel.js slim-online-sheriff.js SpamControl.js Sticky_Channel.js Support-pp.js saveCPU.js nickCrashHelper.js registerNotificator.js
+unusedscript=advertising alonemode bookmark followme norecording rememberChannel welcome
+unusedjsscript=advertising.js alonemode.js bookmark.js followme.js norecording.js rememberChannel.js welcome.js
 
 ### INSTALL ###
 install="x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1 x11-xkb-utils libasound2 libpci3 libxslt1.1 libxkbcommon0 libglib2.0-0 libxss1 update-ca-certificates unzip screen python curl wget sudo"
@@ -177,7 +181,7 @@ installscripts:
     echo 
     echo "Bisher lassen sich follgende Scripts auf einmal installieren:"
     echo
-    for i in Auto-Channel-Creator CountOnlineUsers expandingChannel slim-online-sheriff SpamControl Sticky_Channel Support-pp saveCPU
+    for i in $scriptvar
     do
         read -t 0.5
         echo "  $i"
@@ -194,7 +198,7 @@ installscripts:
         cat user
         echo
         read -p "Für welchen Bot sollen die Scripts installiert werden?: " name
-        for del in Support.js Sticky_Channel.js SpamControl.js slim-online-sheriff.js expandingChannel.js CountOnlineUsers.js Auto_Channel_Creator.js saveCPU.js
+        for del in $scriptjsvar
         do
             rm /home/$name/scripts/$del
         done
@@ -211,7 +215,7 @@ installscripts:
         echo "Ich kann zusätzlich noch Scripts löschen, die in den meisten Fällen nicht benötigt werden."
         echo "Diese Scripts würden gelöscht werden:"
         echo
-        for i in advertising alonemode bookmark followme norecording rememberChannel welcome
+        for i in $unusedscript
         do
             echo "  $i"
             read -t 0.5
@@ -224,7 +228,7 @@ installscripts:
         case $scriptsdel in
             Y | y | J | j)
             clear
-            for i in advertising.js alonemode.js bookmark.js followme.js norecording.js rememberChannel.js welcome.js
+            for i in $unusedjsscript
             do
                 sudo rm /home/$name/scripts/$i
             done

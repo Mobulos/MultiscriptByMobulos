@@ -17,7 +17,7 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.1.5
+ver=3.1.7
 dat=21.07.2020
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
@@ -181,7 +181,7 @@ installscripts:
     echo 
     echo "Bisher lassen sich follgende Scripts auf einmal installieren:"
     echo
-    for i in $scriptvar
+    for i in ´$scriptvar´
     do
         read -t 0.5
         echo "  $i"
@@ -198,7 +198,7 @@ installscripts:
         cat user
         echo
         read -p "Für welchen Bot sollen die Scripts installiert werden?: " name
-        for del in $scriptjsvar
+        for del in '$scriptjsvar'
         do
             rm /home/$name/scripts/$del
         done
@@ -215,7 +215,7 @@ installscripts:
         echo "Ich kann zusätzlich noch Scripts löschen, die in den meisten Fällen nicht benötigt werden."
         echo "Diese Scripts würden gelöscht werden:"
         echo
-        for i in $unusedscript
+        for i in '$unusedscript'
         do
             echo "  $i"
             read -t 0.5
@@ -228,7 +228,7 @@ installscripts:
         case $scriptsdel in
             Y | y | J | j)
             clear
-            for i in $unusedjsscript
+            for i in '$unusedjsscript'
             do
                 sudo rm /home/$name/scripts/$i
             done

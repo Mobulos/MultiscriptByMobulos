@@ -17,14 +17,14 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.1.8
+ver=3.1.9
 dat=21.07.2020
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
 
 
 ### INSTALL ###
-install="x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1 x11-xkb-utils libasound2 libpci3 libxslt1.1 libxkbcommon0 libglib2.0-0 libxss1 update-ca-certificates unzip screen python curl wget sudo"
+install=""
 ### INSTALL ###
 
 ############################################
@@ -78,34 +78,30 @@ fi
 install:
     sudo apt-get update
     clear
-    for i in $install
+    for i in x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1 x11-xkb-utils libasound2 libpci3 libxslt1.1 libxkbcommon0 libglib2.0-0 libxss1 update-ca-certificates unzip screen python curl wget sudo
     do
     sudo apt-get install -y $i
-    clear
     done
-    touch ports
-    touch user
-    clear
     jumpto $installall
 
 
 installall:
   clear
-  read -p "Hast du Ubuntu 18.04? (Ja/Nein) Falls du dir nicht sicher bist probiere es mit 'Nein' " ubuntu
+  read -p "Hast du Ubuntu 18.04? (Y|N) Falls du dir nicht sicher bist probiere es mit 'Nein' " ubuntu
       case $ubuntu in
-        Ja)
+        Y|y|J|j)
         add-apt-repository universe
         apt-get update
-        clear
-        jumpto $menue
         ;;
 
-        Nein)
+        n|N)
         apt-get install libglib2.0-0
-        clear
-        jumpto $menue
         ;;
       esac
+    touch ports
+    touch user
+    clear
+    jumpto $menue
 
 
 

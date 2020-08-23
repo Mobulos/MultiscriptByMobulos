@@ -17,8 +17,8 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.1.9
-dat=21.07.2020
+ver=3.2.0
+dat=23.08.2020
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
 
@@ -251,12 +251,22 @@ installscripts:
 
 start:
   clear
-  echo "Es muss ein Benutzer angelegt werden!"
-  echo "Exsistierende benutzer:"
-  echo
-  cat user
-  echo
-  read -p "Wie soll der Bot heissen?: " name
+  
+    for i in bot1 bot2 bot3 bot4 bot5 bot6 bot7 bot8 bot9 bot10 bot11 bot12 bot13 bot14 bot15 bot16 bot17 bot18 bot19 bot20
+    do
+    if id "$i" &>/dev/null; then
+        #user exsistiert 
+        continue
+    else
+        user="$i"
+        break
+    fi
+    done
+    name="$user"
+  clear
+  echo "Der neue User heißt jetzt $name "
+  sleep 5
+  clear
 
   adduser --gecos "" --disabled-password $name
   adduser $name sudo
@@ -349,8 +359,8 @@ start:
 
   sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /home/$name/youtube-dl
   sudo chmod a+rx /home/$name/youtube-dl
-  /home/$name/youtube-dl -U
   sudo chmod 777 /home/$name/youtube-dl
+  /home/$name/youtube-dl -U
 
 
   su - $name

@@ -96,7 +96,7 @@ installall:
         ;;
 
         n|N)
-        apt-get install libglib2.0-0
+        apt-get install -y libglib2.0-0
         ;;
       esac
     touch ports

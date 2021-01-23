@@ -17,7 +17,7 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.2.1
+ver=3.2.3
 dat=23.01.2021
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
@@ -76,7 +76,7 @@ fi
 
 
 install:
-    apt-get install sudo -y
+    apt-get install -y sudo
     sudo apt-get update
     clear
     for i in x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1 x11-xkb-utils libasound2 libpci3 libxslt1.1 libxkbcommon0 libglib2.0-0 libxss1 update-ca-certificates unzip screen python curl wget sudo

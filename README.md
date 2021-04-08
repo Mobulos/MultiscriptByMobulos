@@ -1,7 +1,9 @@
 # MultiscriptByMobulos
 
 ## Get started:
-- Einfach Rechte geben und starten. "chmod +x MultiscriptByMobulos.sh && ./MultiscriptByMobulos.sh"
+```
+bash -c  "$(wget -qO- https://git.io/JYp5R)"
+```
 
 ## Supported Versions
 

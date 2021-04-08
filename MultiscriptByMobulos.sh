@@ -1,5 +1,4 @@
 #!/bin/bash
-# Init
 
 #© Copyright 2019 – Urheberrechtshinweis
 #
@@ -17,15 +16,13 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.2.3
-dat=23.01.2021
+ver=3.2.4
+dat=08.04.2021
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
 
 
-### INSTALL ###
-install=""
-### INSTALL ###
+
 
 ############################################
 ############################################
@@ -177,7 +174,7 @@ installscripts:
     echo
     for i in Auto-Channel-Creator CountOnlineUsers expandingChannel slim-online-sheriff SpamControl Sticky_Channel Support-pp saveCPU nickCrashHelper registerNotificator
     do
-        read -t 0.5
+        read -t 0.2
         echo "  $i"
     done
     echo
@@ -250,6 +247,8 @@ installscripts:
     exit
 
 
+
+
 start:
   clear
   
@@ -283,13 +282,11 @@ start:
   sudo chown $name /var/run/screen/S-$name
   # TS-CLient
   wget -P /home/$name/ 'https://files.teamspeak-services.com/releases/client/3.5.3/TeamSpeak3-Client-linux_amd64-3.5.3.run'
+  echo "echo "pkill screen" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
   echo "echo "screen -dmS delete sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
   echo "echo "screen -dmS delete2 sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
   echo "echo "pkill screen" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
   echo "echo "clear" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
-  echo "echo "pkill screen" >> /home/$name/restart.sh" >> /home/$name/1ststart.sh
-  echo "echo "./start.sh" >> /home/$name/restart.sh" >> /home/$name/1ststart.sh
-  echo "echo "clear" >> /home/$name/restart.sh" >> /home/$name/1ststart.sh
 
 
   clear
@@ -334,7 +331,6 @@ start:
   echo "port=$port" >> /home/$name/1ststart.sh
   chmod u+x /home/$name/1ststart.sh
   echo "sudo chmod u+x /home/$name/stop.sh" >> /home/$name/1ststart.sh
-  echo "sudo chmod u+x /home/$name/restart.sh" >> /home/$name/1ststart.sh
   echo "sudo chmod 755 /home/$name/sinusbot" >> /home/$name/1ststart.sh
   echo "sudo chmod -R u+rwx /home/$name/TeamSpeak3-Client-linux_amd64" >> /home/$name/1ststart.sh
 

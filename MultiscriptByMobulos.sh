@@ -7,28 +7,18 @@
 #
 # Wer gegen das Urheberrecht verstößt (z.B. Texte unerlaubt kopiert), macht sich gem. §§ 106 ff UrhG strafbar, wird zudem kostenpflichtig abgemahnt und muss Schadensersatz leisten (§ 97 UrhG).
 #
-################################################################
-#################	            	 Script		           ##########################
-################################################################
-
-
 
 
 ############################################
 ################# CHANGE ###################
-ver=3.2.4
+ver=3.2.5
 dat=08.04.2021
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
-
-
-
-
 ############################################
 ############################################
 
-
-
+#JumpTo Funktion init
 function jumpto
 {
     label=$1
@@ -37,6 +27,8 @@ function jumpto
     exit
 }
 
+
+#JumpTo Definitionen
 menue=${1:-"menue"}
 start=${2:-"start"}
 failedmunue=${5:-"failedmenue"}
@@ -51,51 +43,57 @@ delete=${14:-"delete"}
 installscripts=${15:-"installscripts"}
 
 
+# Farbcodes definieren
+red=($(tput setaf 1))
+green=($(tput setaf 2))
+yellow=($(tput setaf 3))
+reset=($(tput sgr0))
 
+#Farbcoe reseten
+echo "$reset"
+
+#Root Check
 FILE="/tmp/out.$$"
 GREP="/bin/grep"
 if [ "$(id -u)" != "0" ]; then
    echo "Das Script muss als root gestartet werden." 1>&2
    exit 1
 fi
-
-
-
-
-  clear
-  file="ports"
-  if [ ! -f "$file" ]
-  then
-      jumpto install
-  fi
-  jumpto menue
+#Erster start Check
+clear
+file="ports"
+if [ ! -f "$file" ]
+then
+    jumpto install
+fi
+jumpto menue
 
 
 
 install:
+    apt-get update ||:
     apt-get install -y sudo
-    sudo apt-get update
+    apt-get update
     clear
-    for i in x11vnc xvfb libxcursor1 ca-certificates bzip2 libnss3 libegl1 x11-xkb-utils libasound2 libpci3 libxslt1.1 libxkbcommon0 libglib2.0-0 libxss1 update-ca-certificates unzip screen python curl wget sudo
+    for i in bzip2 ca-certificates curl libasound2 libegl1 libglib2.0-0 libnss3 libpci3 libxcursor1 libxkbcommon0 libxslt1.1 libxss1 python screen sudo unzip update-ca-certificates wget x11vnc x11-xkb-utils xvfb
     do
-    sudo apt-get install -y $i
+        apt-get install -y $i
     done
     jumpto $installall
 
 
 installall:
   clear
-  read -p "Hast du Ubuntu 18.04? (Y|N) Falls du dir nicht sicher bist probiere es mit 'Nein' " ubuntu
-      case $ubuntu in
+  read -p "Hast du Ubuntu 18.04? (Y|N) Falls du dir nicht sicher bist probiere es mit nein '(N)' " ubuntu
+        case $ubuntu in
         Y|y|J|j)
-        add-apt-repository universe
-        apt-get update
+            add-apt-repository universe
+            apt-get update
         ;;
-
         n|N)
-        apt-get install -y libglib2.0-0
+            apt-get install -y libglib2.0-0
         ;;
-      esac
+        esac
     touch ports
     touch user
     clear
@@ -104,21 +102,44 @@ installall:
 
 
 menue:
-  clear
+    clear
 
 failedmenue:
-  echo "Version: $ver"
-  echo "Update vom: $dat"
-  echo
-  echo "  1. Bot installieren"
-  echo "  2. Bot löschen"
-  echo "  3. Scripts installieren"
-  echo "  4. Exsistierende nutzer anzeigen"
-  echo "  5. Script Updaten"
-  echo "  6. Exit"
-  echo
-  read -n 1 -p "Bot Befehle: " befehl
-  case $befehl in
+    clear
+    echo "$yellow########################################"
+    read -t 0.1
+    echo "#####  SinusBot Script by Mobulos  #####"
+    read -t 0.1
+    echo "########################################"
+    read -t 0.1
+    echo
+    echo "$reset"
+    read -t 0.1
+    echo "Version: $ver"
+    read -t 0.1
+    echo "Update vom: $dat"
+    tmp=($(tput setaf 2)) && echo "$tmp"
+    read -t 0.1
+    echo "  1. Bot installieren"
+    tmp=($(tput setaf 3)) && echo -n "$tmp"
+    read -t 0.1
+    echo "  2. Bot löschen"
+    tmp=($(tput setaf 4)) && echo -n "$tmp"
+    read -t 0.1
+    echo "  3. Scripts installieren"
+    tmp=($(tput setaf 5)) && echo -n "$tmp"
+    read -t 0.1
+    echo "  4. Exsistierende nutzer anzeigen"
+    tmp=($(tput setaf 6)) && echo -n "$tmp"
+    read -t 0.1
+    echo "  5. Script Updaten"
+    read -t 0.1
+    tmp=($(tput setaf 1))
+    echo -n "$tmp"
+    echo "  6. Exit"
+    echo "$reset"
+    read -n 1 -p "Bot Befehle: " befehl
+    case $befehl in
   	1)
         clear
         jumpto $start
@@ -138,19 +159,19 @@ failedmenue:
         echo
         cat user
         echo
-        read -p "Drücke eine Taste, um fortzufahren"
+        read -n1 -p "Drücke eine Taste, um fortzufahren."
         jumpto $menue
      ;;
   	5)
         clear
-        echo "BEENDE DAS SCRIPT UNTER KEINEN UMSTÄNDEN!"
-        read -t 3
+        echo "Dies kann einige Sekunden dauern!"
+        read -t 3 -n 1
         clear
         rm $filescript
         wget $link
         chmod +x $filescript
         clear
-        echo "Update abgeschlossen, du kannst das Script jetzt erneut starten!"
+        echo "Update abgeschlossen, du kannst das Script jetzt erneut starten."
         exit
   	 ;;
   	6)
@@ -159,17 +180,130 @@ failedmenue:
   	 ;;
   	*)
         clear
-        echo "Eingabe wird nicht Akzeptiert"
-        read -t 3
+        echo "Eingabe wird nicht Akzeptiert."
+        read -t 3 -n 1
         jumpto $failedmenue
   	 ;;
-  esac
+    esac
 
+
+start:
+    clear
+    for i in bot1 bot2 bot3 bot4 bot5 bot6 bot7 bot8 bot9 bot10 bot11 bot12 bot13 bot14 bot15 bot16 bot17 bot18 bot19 bot20
+    do
+        if id "$i" &>/dev/null; then
+            #user exsistiert 
+            continue
+        else
+            user="$i"
+            break
+        fi
+    done
+    name="$user"
+    clear
+    read -n 1 -t 3 -p "Der neue User heißt jetzt $name "
+    echo
+    adduser --gecos "" --disabled-password $name
+    adduser $name sudo
+    sh -c "echo '$name ALL=NOPASSWD: ALL' >> /etc/sudoers"
+    clear
+    echo "Erforderliche Daten werden herruntergeladen"
+    wget -P /home/$name/ 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/download/sinusbot.current.zip'
+    sudo chown $name /var/run/screen/S-$name
+
+    # TS-CLient
+    wget -P /home/$name/ 'https://files.teamspeak-services.com/releases/client/3.5.3/TeamSpeak3-Client-linux_amd64-3.5.3.run'
+
+    # TS-Client
+    clear
+    echo "$red"
+    echo  "Bitte beachte, dass das Passwort local als ROH-Datei gespeichert wird."
+    echo "$reset"
+    read -p "Bitte erstelle ein Passwort fuer den Sinusbot: $reset" pw
+    clear
+    echo -n "$yellow"
+    echo "Der Erste Port Lautet in der Regel 8087"
+    echo
+    echo "Folgende Ports sind bereits belegt:"
+    echo "$reset"
+    cat ports
+    read -n 4 -p "Bitte einen neuen 4stelligen Port eingeben: " port
+
+    #1ststart.sh schreiben
+    echo "sudo unzip /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
+    echo "sudo rm /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
+    echo "sudo mv sinusbot.current/* ." >> /home/$name/1ststart.sh
+    echo "sudo rm sinusbot.current/" >> /home/$name/1ststart.sh
+    echo "echo "pkill screen" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+    echo "echo "screen -dmS delete sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+    echo "echo "screen -dmS delete2 sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+    echo "echo "pkill screen" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
+    echo "echo "clear" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
+    echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
+    echo "clear" >> /home/$name/1ststart.sh
+    echo "echo Zum akzeptieren 'ENTER', 'q', 'y' und 'ENTER' drücken" >> /home/$name/1ststart.sh
+    echo "echo" >> /home/$name/1ststart.sh
+    echo "echo -----------------------------------------------------" >> /home/$name/1ststart.sh
+    echo "/home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
+    echo "echo "screen -dmS $name ./sinusbot --override-password=$pw" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+    echo "sudo chmod u+x /home/$name/start.sh" >> /home/$name/1ststart.sh
+    echo "clear" >> /home/$name/1ststart.sh
+    echo "echo Du kannst den Bot ab jetzt mit dem Befehl "./start.sh" starten" >> /home/$name/1ststart.sh
+    echo "echo" >> /home/$name/1ststart.sh
+    echo "echo Login Daten: " >> /home/$name/1ststart.sh
+    echo "curl ifconfig.me;echo :$port" >> /home/$name/1ststart.sh
+    echo "echo" >> /home/$name/1ststart.sh
+    echo "echo Username:" >> /home/$name/1ststart.sh
+    echo "echo "admin" " >> /home/$name/1ststart.sh
+    echo "echo" >> /home/$name/1ststart.sh
+    echo "echo Passwort: " >> /home/$name/1ststart.sh
+    echo "echo "$pw" " >> /home/$name/1ststart.sh
+    echo "echo" >> /home/$name/1ststart.sh
+    echo "port=$port" >> /home/$name/1ststart.sh
+    echo "sudo chmod u+x /home/$name/stop.sh" >> /home/$name/1ststart.sh
+    echo "sudo chmod 755 /home/$name/sinusbot" >> /home/$name/1ststart.sh
+    echo "sudo chmod -R u+rwx /home/$name/TeamSpeak3-Client-linux_amd64" >> /home/$name/1ststart.sh
+    echo "sudo chown -R $name:$name /home/$name" >> /home/$name/1ststart.sh
+    echo "mv config2.ini.dist config.ini.dist" >> /home/$name/1ststart.sh
+    echo "sudo cp config.ini.dist config.ini" >> /home/$name/1ststart.sh
+    echo "sudo rm /home/$name/TeamSpeak3-Client-linux_amd64/xcbglintegrations/libqxcb-glx-integration.so" >> /home/$name/1ststart.sh
+    echo "sudo mkdir /home/$name/TeamSpeak3-Client-linux_amd64/plugins" >> /home/$name/1ststart.sh
+    echo "sudo cp /home/$name/plugin/libsoundbot_plugin.so /home/$name/TeamSpeak3-Client-linux_amd64/plugins/." >> /home/$name/1ststart.sh
+    echo "sudo chown -R $name:$name /home/$name/*" >> /home/$name/1ststart.sh
+    echo "rm /home/$name/1ststart.sh" >> /home/$name/1ststart.sh
+    chmod u+x /home/$name/1ststart.sh
+    pw=???
+
+    #User Datei Eintrag
+    echo "$name:$port" >> user
+
+    #Port in Dateien eintragen
+    echo "$port" >> ports
+    echo "$port" >> /home/$name/port
+
+    #Config schreiben
+    echo "ListenPort = $port " > /home/$name/config2.ini.dist
+    echo "ListenHost = '0.0.0.0'" >> /home/$name/config2.ini.dist
+    echo "LogLevel = 10" >> /home/$name/config2.ini.dist
+    echo "TS3Path = '/home/$name/TeamSpeak3-Client-linux_amd64/ts3client_linux_amd64'" >> /home/$name/config2.ini.dist
+    echo "YoutubeDLPath = '/home/$name/youtube-dl'" >> /home/$name/config2.ini.dist
+
+    chown -R $name:$name /home/$name/*
+    clear
+    cd /home/$name
+    su $name -c /home/$name/1ststart.sh
+
+    echo -n "$yellow"
+    echo "Youtube Downloader installieren."
+    echo -n "$reset"
+    curl --progress-bar -L https://yt-dl.org/downloads/latest/youtube-dl -o /home/$name/youtube-dl
+    chmod u+rx /home/$name/youtube-dl
+    screen -dmS tmp /home/$name/youtube-dl -U
+    su - $name
+    exit
 
 installscripts:
     clear
-    echo "Diese Funktion ist noch in entwicklung."
-    echo 
     echo "Bisher lassen sich follgende Scripts auf einmal installieren:"
     echo
     for i in Auto-Channel-Creator CountOnlineUsers expandingChannel slim-online-sheriff SpamControl Sticky_Channel Support-pp saveCPU nickCrashHelper registerNotificator
@@ -188,7 +322,7 @@ installscripts:
         echo
         cat user
         echo
-        read -p "Für welchen Bot sollen die Scripts installiert werden?: " name
+        read -n4 -p "Für welchen Bot sollen die Scripts installiert werden?: " name
         for i in Auto-Channel-Creator.js CountOnlineUsers.js expandingChannel.js slim-online-sheriff.js SpamControl.js Sticky_Channel.js Support-pp.js saveCPU.js nickCrashHelper.js registerNotificator.js
         do
             rm /home/$name/scripts/$i
@@ -209,7 +343,7 @@ installscripts:
         for i in advertising alonemode bookmark followme norecording rememberChannel welcome
         do
             echo "  $i"
-            read -t 0.5
+            read -t 0.2
         done
         echo "echo 'Die Scripts wurden nun installiert!'" >> /home/$name/scriptinstall.sh
         echo
@@ -232,9 +366,10 @@ installscripts:
             ;;
         esac
         echo "echo" >> /home/$name/scriptinstall.sh
-        echo "echo Vergiss nicht, den Bot mit './restart.sh' neuzustarten, um die änderungen zu übernehmen!" >> /home/$name/scriptinstall.sh
+        echo "echo Vergiss nicht, den Bot mit './start.sh' neuzustarten, um die änderungen zu übernehmen!" >> /home/$name/scriptinstall.sh
         echo "exit" >> /home/$name/scriptinstall.sh
         echo "Bitte gebe nun './scriptinstall.sh' ein um die installation abzuschließen!"
+        su $name -c /home/$name/scriptinstall.sh
         su - $name
         exit
     ;;
@@ -249,138 +384,25 @@ installscripts:
 
 
 
-start:
-  clear
-  
-    for i in bot1 bot2 bot3 bot4 bot5 bot6 bot7 bot8 bot9 bot10 bot11 bot12 bot13 bot14 bot15 bot16 bot17 bot18 bot19 bot20
-    do
-    if id "$i" &>/dev/null; then
-        #user exsistiert 
-        continue
-    else
-        user="$i"
-        break
-    fi
-    done
-    name="$user"
-  clear
-  echo "Der neue User heißt jetzt $name "
-  sleep 5
-  clear
-
-  adduser --gecos "" --disabled-password $name
-  adduser $name sudo
-  sh -c "echo '$name ALL=NOPASSWD: ALL' >> /etc/sudoers"
-  echo "Erforderliche Daten werden herruntergeladen"
-
-  wget -P /home/$name/ 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/download/sinusbot.current.zip'
-  echo "sudo unzip /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
-  echo "sudo rm /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
-  echo "sudo mv sinusbot.current/* ." >> /home/$name/1ststart.sh
-  echo "sudo rm sinusbot.current/" >> /home/$name/1ststart.sh
-
-  sudo chown $name /var/run/screen/S-$name
-  # TS-CLient
-  wget -P /home/$name/ 'https://files.teamspeak-services.com/releases/client/3.5.3/TeamSpeak3-Client-linux_amd64-3.5.3.run'
-  echo "echo "pkill screen" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
-  echo "echo "screen -dmS delete sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
-  echo "echo "screen -dmS delete2 sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
-  echo "echo "pkill screen" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
-  echo "echo "clear" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
-
-
-  clear
-  # TS-Client
-  echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
-  echo "clear" >> /home/$name/1ststart.sh
-  echo "echo Zum akzeptieren 'ENTER', 'q', 'y' und 'ENTER' drücken" >> /home/$name/1ststart.sh
-  echo "echo" >> /home/$name/1ststart.sh
-  echo "echo -----------------------------------------------------" >> /home/$name/1ststart.sh
-  # TS-Client
-  echo "/home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
-
-  read -p "Bitte erstelle ein Passwort fuer den Sinusbot: " pw
-  clear
-
-  echo "Folgende Ports sind bereits belegt:"
-  cat ports
-  read -n 4 -p "Bitte einen neuen Port eingeben: " port
-
-  clear
-  echo "echo "screen -dmS $name ./sinusbot --override-password=$pw" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
-  echo "sudo chmod u+x /home/$name/start.sh" >> /home/$name/1ststart.sh
-  echo "clear" >> /home/$name/1ststart.sh
-  echo "echo Du kannst den Bot ab jetzt mit dem Befehl "./start.sh" starten" >> /home/$name/1ststart.sh
-  echo "echo" >> /home/$name/1ststart.sh
-  echo "echo Login Daten: " >> /home/$name/1ststart.sh
-  echo "curl ifconfig.me;echo :$port" >> /home/$name/1ststart.sh
-  echo "echo" >> /home/$name/1ststart.sh
-  echo "echo Username:" >> /home/$name/1ststart.sh
-  echo "echo "Admin" " >> /home/$name/1ststart.sh
-  echo "echo" >> /home/$name/1ststart.sh
-  echo "echo Passwort: " >> /home/$name/1ststart.sh
-  echo "echo "$pw" " >> /home/$name/1ststart.sh
-  echo "echo" >> /home/$name/1ststart.sh
-  clear
-
-
-
-  echo "$name:$port" >> user
-  echo "$port" >> ports
-  echo "$port" >> /home/$name/port
-  echo "port=$port" >> /home/$name/1ststart.sh
-  chmod u+x /home/$name/1ststart.sh
-  echo "sudo chmod u+x /home/$name/stop.sh" >> /home/$name/1ststart.sh
-  echo "sudo chmod 755 /home/$name/sinusbot" >> /home/$name/1ststart.sh
-  echo "sudo chmod -R u+rwx /home/$name/TeamSpeak3-Client-linux_amd64" >> /home/$name/1ststart.sh
-
-  echo "ListenPort = $port " > /home/$name/config2.ini.dist
-  echo "ListenHost = '0.0.0.0'" >> /home/$name/config2.ini.dist
-  echo "LogLevel = 10" >> /home/$name/config2.ini.dist
-  echo "TS3Path = '/home/$name/TeamSpeak3-Client-linux_amd64/ts3client_linux_amd64'" >> /home/$name/config2.ini.dist
-  echo "YoutubeDLPath = '/home/$name/youtube-dl'" >> /home/$name/config2.ini.dist
-  echo "sudo chown -R $name:$name /home/$name" >> /home/$name/1ststart.sh
-  echo "mv config2.ini.dist config.ini.dist" >> /home/$name/1ststart.sh
-  echo "sudo cp config.ini.dist config.ini" >> /home/$name/1ststart.sh
-
-  echo "sudo rm /home/$name/TeamSpeak3-Client-linux_amd64/xcbglintegrations/libqxcb-glx-integration.so" >> /home/$name/1ststart.sh
-  echo "sudo mkdir /home/$name/TeamSpeak3-Client-linux_amd64/plugins" >> /home/$name/1ststart.sh
-  echo "sudo cp /home/$name/plugin/libsoundbot_plugin.so /home/$name/TeamSpeak3-Client-linux_amd64/plugins/." >> /home/$name/1ststart.sh
-  echo "sudo chown -R $name:$name /home/$name/*" >> /home/$name/1ststart.sh
-  echo "rm /home/$name/1ststart.sh" >> /home/$name/1ststart.sh
-
-  chown -R $name:$name /home/$name/*
-  clear
-  cd /home/$name
-  su $name -c /home/$name/1ststart.sh
-
-  sudo curl -L https://yt-dl.org/downloads/latest/youtube-dl -o /home/$name/youtube-dl
-  sudo chmod a+rx /home/$name/youtube-dl
-  sudo chmod 777 /home/$name/youtube-dl
-  /home/$name/youtube-dl -U
-
-
-  su - $name
-  exit
 
 delete:
-  echo "Exsistierende Benutzer:"
-  cat user
-  echo
-  echo "Mögliche Eigabe: bot1"
-  echo "Falsche Eingabe bot1:8087"
-  echo
-  read -p "Welchen Bot möchtest du löschen? " name
-  killall -u $name
-  clear
-  cat /home/$name/port
-  read -n 4 -p "bitte gebe zur verifizierung die obenstehenden Zahlen ein: " ports
-  grep -v "$name:$ports" user > user2
-  mv user2 user
-  grep -v "$ports" ports > ports2
-  mv ports2 ports
-  deluser $name
-  rm -r /home/$name
-  clear
-  echo Der User wurde gelöscht
-  exit
+    echo "Exsistierende Benutzer:"
+    cat user
+    echo
+    echo "Mögliche Eigabe: bot1"
+    echo "Falsche Eingabe bot1:8087"
+    echo
+    read -n 4 -p "Welchen Bot möchtest du löschen? " name
+    killall -u $name
+    clear
+    cat /home/$name/port
+    read -n 4 -p "bitte gebe zur verifizierung die obenstehenden Zahlen ein: " ports
+    grep -v "$name:$ports" user > user2
+    mv user2 user
+    grep -v "$ports" ports > ports2
+    mv ports2 ports
+    deluser $name
+    rm -r /home/$name
+    clear
+    echo Der User wurde gelöscht
+    exit

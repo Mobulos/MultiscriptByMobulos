@@ -3,7 +3,7 @@
 #© Copyright 2019 – Urheberrechtshinweis
 #
 # Alle Inhalte, insbesondere Texte, sind urheberrechtlich geschützt. Das Urheberrecht liegt, soweit nicht ausdrücklich anders gekennzeichnet, bei Fabian Schmeltzer. Bitte fragen Sie mich, falls Sie die Inhalte dieses Internetangebotes verwenden möchten.
-# Mail: Fabian.schmeltzer77@outlook.de
+# Mail: Fabian@schmeltzer.info
 #
 # Wer gegen das Urheberrecht verstößt (z.B. Texte unerlaubt kopiert), macht sich gem. §§ 106 ff UrhG strafbar, wird zudem kostenpflichtig abgemahnt und muss Schadensersatz leisten (§ 97 UrhG).
 #
@@ -11,7 +11,7 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.2.6
+ver=3.2.7
 dat=09.04.2021
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
@@ -31,16 +31,12 @@ function jumpto
 #JumpTo Definitionen
 menue=${1:-"menue"}
 start=${2:-"start"}
-failedmunue=${5:-"failedmenue"}
-menue=${7:-"menue"}
-install=${8:-"install"}
-ubuntu=${9:-"ubuntu"}
-noubuntu=${10:-"noubuntu"}
-first=${11:-"first"}
-installall=${12:-"installall"}
-log=${13:-"log"}
-delete=${14:-"delete"}
-installscripts=${15:-"installscripts"}
+failedmenue=${3:-"failedmenue"}
+menue=${4:-"menue"}
+install=${5:-"install"}
+installall=${6:-"installall"}
+delete=${7:-"delete"}
+installscripts=${8:-"installscripts"}
 
 
 # Farbcodes definieren
@@ -110,8 +106,6 @@ else
 	fi
 fi
 
-echo "test"
-
 
 install:
     apt-get update ||:
@@ -168,10 +162,10 @@ failedmenue:
     echo "  2. Bot löschen"
     tmp=($(tput setaf 4)) && echo -n "$tmp"
     read -t0.1
-    echo "  3. Scripts installieren"
+    echo "  3. Scripts für den SinusBot installieren"
     tmp=($(tput setaf 5)) && echo -n "$tmp"
     read -t0.1
-    echo "  4. Exsistierende nutzer anzeigen"
+    echo "  4. Existierende nutzer anzeigen"
     tmp=($(tput setaf 6)) && echo -n "$tmp"
     read -t0.1
     echo "  5. Script Updaten"
@@ -185,16 +179,16 @@ failedmenue:
   	1)
         clear
         jumpto $start
-  	 ;;
+  	;;
   	2)
         clear
         jumpto $delete
-  	 ;;
+  	;;
     3)
         clear
         jumpto $installscripts
         exit
-     ;;
+    ;;
     4)
         clear
         echo "Folgende Benutzer exsistieren bereits:"
@@ -203,8 +197,8 @@ failedmenue:
         echo
         read -n1 -p "Drücke eine Taste, um fortzufahren."
         jumpto $menue
-     ;;
-  	5)
+    ;;
+  	5|u|U)
         clear
         echo "Dies kann einige Sekunden dauern!"
         read -t3 -n1
@@ -215,17 +209,17 @@ failedmenue:
         clear
         echo "Update abgeschlossen, du kannst das Script jetzt erneut starten."
         exit
-  	 ;;
+  	;;
   	6)
         clear
         exit
-  	 ;;
+  	;;
   	*)
         clear
         echo "Eingabe wird nicht Akzeptiert."
         read -t3 -n1
         jumpto $failedmenue
-  	 ;;
+  	;;
     esac
 
 
@@ -238,6 +232,7 @@ start:
             continue
             echo no
         elif [ "$i" == "nan" ]; then
+            #Keine User mehr verfügbar
             clear
             code="003"
             error
@@ -290,31 +285,31 @@ start:
     echo "sudo unzip /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
     echo "sudo rm /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
     echo "sudo mv sinusbot.current/* ." >> /home/$name/1ststart.sh
-    echo "sudo rm sinusbot.current/" >> /home/$name/1ststart.sh
-    echo "echo "pkill screen" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
-    echo "echo "screen -dmS delete sudo rm /tmp/.sinusbot.lock" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
-    echo "echo "screen -dmS delete2 sudo rm /tmp/.X11-unix/X40" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
-    echo "echo "pkill screen" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
-    echo "echo "clear" >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
+    echo "sudo rm -r sinusbot.current/" >> /home/$name/1ststart.sh
+    echo "echo 'pkill screen' >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+    echo "echo 'screen -dmS delete sudo rm /tmp/.sinusbot.lock' >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+    echo "echo 'screen -dmS delete2 sudo rm /tmp/.X11-unix/X40' >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+    echo "echo 'pkill screen' >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
+    echo "echo 'clear' >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
     echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
     echo "clear" >> /home/$name/1ststart.sh
     echo "echo Zum akzeptieren 'ENTER', 'q', 'y' und 'ENTER' drücken" >> /home/$name/1ststart.sh
     echo "echo" >> /home/$name/1ststart.sh
     echo "echo -----------------------------------------------------" >> /home/$name/1ststart.sh
     echo "/home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
-    echo "echo "screen -dmS $name ./sinusbot --override-password=$pw" >> /home/$name/start.sh" >> /home/$name/1ststart.sh
+    echo "echo 'screen -dmS $name ./sinusbot --override-password=$pw' >> /home/$name/start.sh" >> /home/$name/1ststart.sh
     echo "sudo chmod u+x /home/$name/start.sh" >> /home/$name/1ststart.sh
     echo "clear" >> /home/$name/1ststart.sh
-    echo "echo Du kannst den Bot ab jetzt mit dem Befehl "./start.sh" starten" >> /home/$name/1ststart.sh
+    echo "echo Du kannst den Bot ab jetzt mit dem Befehl './start.sh' starten" >> /home/$name/1ststart.sh
     echo "echo" >> /home/$name/1ststart.sh
-    echo "echo Login Daten: " >> /home/$name/1ststart.sh
+    echo "echo Login Daten:" >> /home/$name/1ststart.sh
     echo "curl ifconfig.me;echo :$port" >> /home/$name/1ststart.sh
     echo "echo" >> /home/$name/1ststart.sh
     echo "echo Username:" >> /home/$name/1ststart.sh
-    echo "echo "admin" " >> /home/$name/1ststart.sh
+    echo "echo 'admin'" >> /home/$name/1ststart.sh
     echo "echo" >> /home/$name/1ststart.sh
     echo "echo Passwort: " >> /home/$name/1ststart.sh
-    echo "echo "$pw" " >> /home/$name/1ststart.sh
+    echo "echo '$pw'" >> /home/$name/1ststart.sh
     echo "echo" >> /home/$name/1ststart.sh
     echo "port=$port" >> /home/$name/1ststart.sh
     echo "sudo chmod u+x /home/$name/stop.sh" >> /home/$name/1ststart.sh
@@ -339,7 +334,7 @@ start:
     echo "$port" >> /home/$name/port
 
     #Config schreiben
-    echo "ListenPort = $port " > /home/$name/config2.ini.dist
+    echo "ListenPort = $port" > /home/$name/config2.ini.dist
     echo "ListenHost = '0.0.0.0'" >> /home/$name/config2.ini.dist
     echo "LogLevel = 10" >> /home/$name/config2.ini.dist
     echo "TS3Path = '/home/$name/TeamSpeak3-Client-linux_amd64/ts3client_linux_amd64'" >> /home/$name/config2.ini.dist
@@ -361,7 +356,7 @@ start:
 
 installscripts:
     clear
-    echo "Bisher lassen sich follgende Scripts auf einmal installieren:"
+    echo "Bisher lassen sich follgende Scripts fuer den SinusBot installieren:"
     echo
     for i in Auto-Channel-Creator CountOnlineUsers expandingChannel slim-online-sheriff SpamControl Sticky_Channel Support-pp saveCPU nickCrashHelper registerNotificator
     do
@@ -373,7 +368,7 @@ installscripts:
     read -t0.5
     read -n1 -p "Willst du diese Scripts installieren? (Y|N) " scripts
     case $scripts in
-    Y | y | J | j)
+    Y|y|J|j)
 		clear
         echo "Exsistierende benutzer:"
         echo
@@ -405,20 +400,20 @@ installscripts:
         echo "echo 'Die Scripts wurden nun installiert!'" >> /home/$name/scriptinstall.sh
         echo
         echo
-        echo "Die Script können im nachhinein erneut installiert werden"
+        echo "Die Script können im nachhinein erneut installiert werden."
         read -n1 -p "Soll ich sie  LÖSCHEN? (Y|N)" scriptsdel
         case $scriptsdel in
-            Y | y | J | j)
+            Y|y|J|j)
             clear
             for i in advertising.js alonemode.js bookmark.js followme.js norecording.js rememberChannel.js welcome.js
             do
                 sudo rm /home/$name/scripts/$i
             done
-            echo "echo Ausserdem wurde 'unnötige' Scripts entfernt!" >> /home/$name/scriptinstall.sh
+            echo "echo Ausserdem wurden 'unnötige' Scripts entfernt!" >> /home/$name/scriptinstall.sh
             clear
             ;;
             n|N)
-            echo "echo Es wurde keine weiteren Scripts gelöscht!'" >> /home/$name/scriptinstall.sh
+            echo "echo 'Es wurde keine weiteren Scripts gelöscht!'" >> /home/$name/scriptinstall.sh
             clear
             ;;
         esac
@@ -431,9 +426,9 @@ installscripts:
         exit
     ;;
     n|N)
-    clear
-    echo "Das Script wird nun beendet!"
-	exit
+        clear
+        echo "Das Script wird nun beendet!"
+        exit
     ;;
 	esac
     exit
@@ -461,5 +456,5 @@ delete:
     deluser $name
     rm -r /home/$name
     clear
-    echo Der User wurde gelöscht
-    exit
+    echo "Der User wurde gelöscht"
+    exit 0

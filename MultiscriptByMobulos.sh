@@ -11,8 +11,8 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.2.5
-dat=08.04.2021
+ver=3.2.6
+dat=09.04.2021
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
 ############################################
@@ -49,7 +49,28 @@ green=($(tput setaf 2))
 yellow=($(tput setaf 3))
 reset=($(tput sgr0))
 
-#Farbcoe reseten
+
+
+function error
+{
+    clear
+    echo -n "$red"
+    echo "FEHLER #$code"
+    echo "$reset"
+    echo "Bitte erstelle ein$yellow issue$reset auf Github: 'https://github.com/Mobulos/MultiscriptByMobulos/issues' und nenne den Fehlercode #$code"
+    echo
+    echo "Wenn du das Script weiterhin nutzen willst musst du follgende befehle eingeben:"
+    echo "$red"
+    echo "WARNUNG diese Befehle beenden alle screens und löschen alle Bots!!! Mache gegebenenfalls ein Backup der Bots!!!"
+    echo -n "$yellow"
+    echo "'pkill screen || rm -r /home/bot* || rm ports user'"
+    echo "$reset"
+    echo "Dannach kannst du das Script wie gewohnt starten"
+    exit 0
+}
+
+
+#Farbcode beim start reseten
 echo "$reset"
 
 #Root Check
@@ -57,24 +78,45 @@ FILE="/tmp/out.$$"
 GREP="/bin/grep"
 if [ "$(id -u)" != "0" ]; then
    echo "Das Script muss als root gestartet werden." 1>&2
-   exit 1
+   exit 0
 fi
+
 #Erster start Check
 clear
 file="ports"
+file2="user"
 if [ ! -f "$file" ]
 then
-    jumpto install
+    #Port existiert nicht
+    if [ ! -f "$file2" ]
+	then
+        #Port existiert nicht | User existiert nicht
+		jumpto install
+	else
+        #Port existiert nicht | User existiert
+        code="001"
+        error
+	fi
+else
+    #Port existiert
+	if [ ! -f "$file2" ]
+	then
+        #Port existiert | User existiert nicht
+        code="002"
+        error
+	else
+        #Port existiert | User existiert
+		jumpto menue
+	fi
 fi
-jumpto menue
 
+echo "test"
 
 
 install:
     apt-get update ||:
     apt-get install -y sudo
     apt-get update
-    clear
     for i in bzip2 ca-certificates curl libasound2 libegl1 libglib2.0-0 libnss3 libpci3 libxcursor1 libxkbcommon0 libxslt1.1 libxss1 python screen sudo unzip update-ca-certificates wget x11vnc x11-xkb-utils xvfb
     do
         apt-get install -y $i
@@ -84,7 +126,7 @@ install:
 
 installall:
   clear
-  read -p "Hast du Ubuntu 18.04? (Y|N) Falls du dir nicht sicher bist probiere es mit nein '(N)' " ubuntu
+  read -n1 -p "Hast du Ubuntu 18.04? (Y|N) Falls du dir nicht sicher bist probiere es mit nein '(N)' " ubuntu
         case $ubuntu in
         Y|y|J|j)
             add-apt-repository universe
@@ -107,38 +149,38 @@ menue:
 failedmenue:
     clear
     echo "$yellow########################################"
-    read -t 0.1
+    read -t0.1
     echo "#####  SinusBot Script by Mobulos  #####"
-    read -t 0.1
+    read -t0.1
     echo "########################################"
-    read -t 0.1
+    read -t0.1
     echo
     echo "$reset"
-    read -t 0.1
+    read -t0.1
     echo "Version: $ver"
-    read -t 0.1
+    read -t0.1
     echo "Update vom: $dat"
     tmp=($(tput setaf 2)) && echo "$tmp"
-    read -t 0.1
+    read -t0.1
     echo "  1. Bot installieren"
     tmp=($(tput setaf 3)) && echo -n "$tmp"
-    read -t 0.1
+    read -t0.1
     echo "  2. Bot löschen"
     tmp=($(tput setaf 4)) && echo -n "$tmp"
-    read -t 0.1
+    read -t0.1
     echo "  3. Scripts installieren"
     tmp=($(tput setaf 5)) && echo -n "$tmp"
-    read -t 0.1
+    read -t0.1
     echo "  4. Exsistierende nutzer anzeigen"
     tmp=($(tput setaf 6)) && echo -n "$tmp"
-    read -t 0.1
+    read -t0.1
     echo "  5. Script Updaten"
-    read -t 0.1
+    read -t0.1
     tmp=($(tput setaf 1))
     echo -n "$tmp"
     echo "  6. Exit"
     echo "$reset"
-    read -n 1 -p "Bot Befehle: " befehl
+    read -n1 -p "Bot Befehle: " befehl
     case $befehl in
   	1)
         clear
@@ -165,7 +207,7 @@ failedmenue:
   	5)
         clear
         echo "Dies kann einige Sekunden dauern!"
-        read -t 3 -n 1
+        read -t3 -n1
         clear
         rm $filescript
         wget $link
@@ -181,7 +223,7 @@ failedmenue:
   	*)
         clear
         echo "Eingabe wird nicht Akzeptiert."
-        read -t 3 -n 1
+        read -t3 -n1
         jumpto $failedmenue
   	 ;;
     esac
@@ -189,19 +231,25 @@ failedmenue:
 
 start:
     clear
-    for i in bot1 bot2 bot3 bot4 bot5 bot6 bot7 bot8 bot9 bot10 bot11 bot12 bot13 bot14 bot15 bot16 bot17 bot18 bot19 bot20
+    for i in bot1 bot2 bot3 bot4 bot5 bot6 bot7 bot8 bot9 bot10 bot11 bot12 bot13 nan
     do
         if id "$i" &>/dev/null; then
             #user exsistiert 
             continue
+            echo no
+        elif [ "$i" == "nan" ]; then
+            clear
+            code="003"
+            error
         else
             user="$i"
+            echo else
             break
         fi
     done
     name="$user"
     clear
-    read -n 1 -t 3 -p "Der neue User heißt jetzt $name "
+    read -n1 -t3 -p "Der neue User heißt jetzt $name "
     echo
     adduser --gecos "" --disabled-password $name
     adduser $name sudo
@@ -221,14 +269,23 @@ start:
     echo "$reset"
     read -p "Bitte erstelle ein Passwort fuer den Sinusbot: $reset" pw
     clear
-    echo -n "$yellow"
-    echo "Der Erste Port Lautet in der Regel 8087"
-    echo
-    echo "Folgende Ports sind bereits belegt:"
-    echo "$reset"
-    cat ports
-    read -n 4 -p "Bitte einen neuen 4stelligen Port eingeben: " port
-
+    # Port
+        for i in 8087 8088 8089 8090 8091 8092 8093 8094 8095 8096 8097 8098 9099 nan
+    do
+        if id "$i" &>/dev/null; then
+            #user exsistiert 
+            continue
+        elif [ "$i" == "nan" ]; then
+            code="004"
+            error
+        else
+            port="$i"
+            clear
+            echo "Fuer den Bot wird der Port $yellow $port $reset genutzt"
+            read -n1 -t3
+            break
+        fi
+    done
     #1ststart.sh schreiben
     echo "sudo unzip /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
     echo "sudo rm /home/$name/sinusbot.current.zip" >> /home/$name/1ststart.sh
@@ -308,12 +365,12 @@ installscripts:
     echo
     for i in Auto-Channel-Creator CountOnlineUsers expandingChannel slim-online-sheriff SpamControl Sticky_Channel Support-pp saveCPU nickCrashHelper registerNotificator
     do
-        read -t 0.2
+        read -t0.2
         echo "  $i"
     done
     echo
     echo
-    read -t 0.5
+    read -t0.5
     read -n1 -p "Willst du diese Scripts installieren? (Y|N) " scripts
     case $scripts in
     Y | y | J | j)
@@ -343,7 +400,7 @@ installscripts:
         for i in advertising alonemode bookmark followme norecording rememberChannel welcome
         do
             echo "  $i"
-            read -t 0.2
+            read -t0.2
         done
         echo "echo 'Die Scripts wurden nun installiert!'" >> /home/$name/scriptinstall.sh
         echo
@@ -392,11 +449,11 @@ delete:
     echo "Mögliche Eigabe: bot1"
     echo "Falsche Eingabe bot1:8087"
     echo
-    read -n 4 -p "Welchen Bot möchtest du löschen? " name
+    read -n4 -p "Welchen Bot möchtest du löschen? " name
     killall -u $name
     clear
     cat /home/$name/port
-    read -n 4 -p "bitte gebe zur verifizierung die obenstehenden Zahlen ein: " ports
+    read -n4 -p "bitte gebe zur verifizierung die obenstehenden Zahlen ein: " ports
     grep -v "$name:$ports" user > user2
     mv user2 user
     grep -v "$ports" ports > ports2

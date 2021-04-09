@@ -1,0 +1,9 @@
+#001
+    Port Datei existiert nicht | User Datei existiert
+#002
+    Port Datei existiert | User Datei existiert nicht
+#003
+    Keine User mehr verfügbar
+#004
+    Keine Ports mehr verfügbar
+        Ist nur der Fall, wenn es mehr User als Ports gibt

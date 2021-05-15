@@ -11,7 +11,7 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.2.8
+ver=3.2.9
 dat=15.05.2021
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
@@ -210,7 +210,7 @@ failedmenue:
         echo "Update abgeschlossen, du kannst das Script jetzt erneut starten."
         exit
   	;;
-  	6)
+  	6|q|Q|E|e)
         clear
         exit
   	;;

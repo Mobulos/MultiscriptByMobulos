@@ -11,8 +11,8 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.2.7
-dat=09.04.2021
+ver=3.2.8
+dat=15.05.2021
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
 ############################################
@@ -375,7 +375,7 @@ installscripts:
         cat user
         echo
         read -n4 -p "Für welchen Bot sollen die Scripts installiert werden?: " name
-        for i in Auto-Channel-Creator.js CountOnlineUsers.js expandingChannel.js slim-online-sheriff.js SpamControl.js Sticky_Channel.js Support-pp.js saveCPU.js nickCrashHelper.js registerNotificator.js
+        for i in Auto-Channel-Creator.js CountOnlineUsers.js expandingChannel.js slim-online-sheriff.js SpamControl.js Sticky_Channel.js Support-pp.js support.js saveCPU.js nickCrashHelper.js registerNotificator.js
         do
             rm /home/$name/scripts/$i
         done

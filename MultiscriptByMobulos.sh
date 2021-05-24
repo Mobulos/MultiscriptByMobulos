@@ -11,8 +11,8 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.2.9
-dat=15.05.2021
+ver=3.3.0
+dat=24.05.2021
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
 ############################################
@@ -358,9 +358,9 @@ installscripts:
     clear
     echo "Bisher lassen sich follgende Scripts fuer den SinusBot installieren:"
     echo
-    for i in Auto-Channel-Creator CountOnlineUsers expandingChannel slim-online-sheriff SpamControl Sticky_Channel Support-pp saveCPU nickCrashHelper registerNotificator
+    for i in Auto-Channel-Creator CountOnlineUsers expandingChannel slim-online-sheriff SpamControl Sticky_Channel Support-pp saveCPU nickCrashHelper registerNotificator clientStatusInChannelName
     do
-        read -t0.2
+        read -t0.1
         echo "  $i"
     done
     echo
@@ -375,7 +375,7 @@ installscripts:
         cat user
         echo
         read -n4 -p "Für welchen Bot sollen die Scripts installiert werden?: " name
-        for i in Auto-Channel-Creator.js CountOnlineUsers.js expandingChannel.js slim-online-sheriff.js SpamControl.js Sticky_Channel.js Support-pp.js support.js saveCPU.js nickCrashHelper.js registerNotificator.js
+        for i in Auto-Channel-Creator.js CountOnlineUsers.js expandingChannel.js slim-online-sheriff.js SpamControl.js Sticky_Channel.js Support-pp.js support.js saveCPU.js nickCrashHelper.js registerNotificator.js clientStatusInChannelName.js
         do
             rm /home/$name/scripts/$i
         done

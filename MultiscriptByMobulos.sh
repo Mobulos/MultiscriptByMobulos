@@ -11,8 +11,8 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.3.0
-dat=24.05.2021
+ver=3.3.3
+dat=04.02.2022
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
 ############################################
@@ -55,11 +55,15 @@ function error
     echo "$reset"
     echo "Bitte erstelle ein$yellow issue$reset auf Github: 'https://github.com/Mobulos/MultiscriptByMobulos/issues' und nenne den Fehlercode #$code"
     echo
-    echo "Wenn du das Script weiterhin nutzen willst musst du follgende befehle eingeben:"
+    echo "Wenn diese meldung nach einem erneuten start erscheint und du das Script weiterhin nutzen willst musst du follgende Befehle eingeben:"
     echo "$red"
     echo "WARNUNG diese Befehle beenden alle screens und löschen alle Bots!!! Mache gegebenenfalls ein Backup der Bots!!!"
     echo -n "$yellow"
     echo "'pkill screen || rm -r /home/bot* || rm ports user'"
+    echo "Ausserdem musst du die Bot User löschen, das machst du mit deluser [user]"
+    echo "Das [User] ersetzt du jetzt mit jeden der follgenden User:"
+    echo "Beispiel: Aus bot1:8087 wird 'deluser bot1'"
+    cat user    
     echo "$reset"
     echo "Dannach kannst du das Script wie gewohnt starten"
     exit 0
@@ -162,17 +166,20 @@ failedmenue:
     echo "  2. Bot löschen"
     tmp=($(tput setaf 4)) && echo -n "$tmp"
     read -t0.1
-    echo "  3. Scripts für den SinusBot installieren"
+    echo "  3. Bot starten/stoppen"
+    tmp=($(tput setaf 4)) && echo -n "$tmp"
+    read -t0.1
+    echo "  4. Scripts für den SinusBot installieren"
     tmp=($(tput setaf 5)) && echo -n "$tmp"
     read -t0.1
-    echo "  4. Existierende nutzer anzeigen"
+    echo "  5. Existierende nutzer anzeigen"
     tmp=($(tput setaf 6)) && echo -n "$tmp"
     read -t0.1
-    echo "  5. Script Updaten"
+    echo "  6. Script Updaten"
     read -t0.1
     tmp=($(tput setaf 1))
     echo -n "$tmp"
-    echo "  6. Exit"
+    echo "  7. Exit"
     echo "$reset"
     read -n1 -p "Bot Befehle: " befehl
     case $befehl in
@@ -186,19 +193,38 @@ failedmenue:
   	;;
     3)
         clear
-        jumpto $installscripts
+        echo "Leider können die Bots noch nicht mit dem Script gestartet oder gestoppt werden."
+        echo "Dies musst du leider manuell machen, doch all zu schwer ist das nicht."
+        echo "Logge dich zuerst in den Bot ein mit: (ersetze bot1 durch deinen Bot)"
+        echo "$yellow"
+        echo "su - bot1"
+        echo "./start.sh"
+        echo -n "$reset"
+        echo "Oder zum stoppen:"
+        echo -n "$yellow"
+        echo "./stop.sh"
+        echo "$reset"
         exit
     ;;
     4)
+        clear
+        jumpto $installscripts
+        exit
+    ;;
+    5)
         clear
         echo "Folgende Benutzer exsistieren bereits:"
         echo
         cat user
         echo
+        echo "Follgende Ports sind eingetragen:"
+        echo
+        cat ports
+        echo
         read -n1 -p "Drücke eine Taste, um fortzufahren."
         jumpto $menue
     ;;
-  	5|u|U)
+  	6|u|U)
         clear
         echo "Dies kann einige Sekunden dauern!"
         read -t3 -n1
@@ -210,7 +236,7 @@ failedmenue:
         echo "Update abgeschlossen, du kannst das Script jetzt erneut starten."
         exit
   	;;
-  	6|q|Q|E|e)
+  	7|q|Q|E|e)
         clear
         exit
   	;;
@@ -225,7 +251,7 @@ failedmenue:
 
 start:
     clear
-    for i in bot1 bot2 bot3 bot4 bot5 bot6 bot7 bot8 bot9 bot10 bot11 bot12 bot13 nan
+    for i in bot1 bot2 bot3 bot4 bot5 bot6 bot7 bot8 bot9 bot10 bot11 bot12 bot13 bot14 bot15 nan
     do
         if id "$i" &>/dev/null; then
             #user exsistiert 
@@ -244,7 +270,7 @@ start:
     done
     name="$user"
     clear
-    read -n1 -t3 -p "Der neue User heißt jetzt $name "
+    read -n1 -t3 -p "Der neue User heißt jetzt$yellow $name $reset"
     echo
     adduser --gecos "" --disabled-password $name
     adduser $name sudo
@@ -265,18 +291,19 @@ start:
     read -p "Bitte erstelle ein Passwort fuer den Sinusbot: $reset" pw
     clear
     # Port
-        for i in 8087 8088 8089 8090 8091 8092 8093 8094 8095 8096 8097 8098 9099 nan
+        for i in 8087 8088 8089 8090 8091 8092 8093 8094 8095 8096 8097 8098 9099 9100 9101 nan
     do
         if id "$i" &>/dev/null; then
             #user exsistiert 
             continue
         elif [ "$i" == "nan" ]; then
+            #Kein Port mehr verfügbar
             code="004"
             error
         else
             port="$i"
             clear
-            echo "Fuer den Bot wird der Port $yellow $port $reset genutzt"
+            echo "Fuer den Bot wird der Port$yellow $port$reset genutzt"
             read -n1 -t3
             break
         fi
@@ -293,7 +320,7 @@ start:
     echo "echo 'clear' >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
     echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
     echo "clear" >> /home/$name/1ststart.sh
-    echo "echo Zum akzeptieren 'ENTER', 'q', 'y' und 'ENTER' drücken" >> /home/$name/1ststart.sh
+    echo "echo $yellow Zum akzeptieren 'ENTER', 'q', 'y' und 'ENTER' drücken $reset" >> /home/$name/1ststart.sh
     echo "echo" >> /home/$name/1ststart.sh
     echo "echo -----------------------------------------------------" >> /home/$name/1ststart.sh
     echo "/home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
@@ -444,11 +471,12 @@ delete:
     echo "Mögliche Eigabe: bot1"
     echo "Falsche Eingabe bot1:8087"
     echo
-    read -n4 -p "Welchen Bot möchtest du löschen? " name
+    read -p "Welchen Bot möchtest du löschen? " name
     killall -u $name
+    pkill $name
     clear
     cat /home/$name/port
-    read -n4 -p "bitte gebe zur verifizierung die obenstehenden Zahlen ein: " ports
+    read -p "bitte gebe zur verifizierung die obenstehenden Zahlen ein: " ports
     grep -v "$name:$ports" user > user2
     mv user2 user
     grep -v "$ports" ports > ports2

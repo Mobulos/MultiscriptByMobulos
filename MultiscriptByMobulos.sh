@@ -8,11 +8,10 @@
 # Wer gegen das Urheberrecht verstößt (z.B. Texte unerlaubt kopiert), macht sich gem. §§ 106 ff UrhG strafbar, wird zudem kostenpflichtig abgemahnt und muss Schadensersatz leisten (§ 97 UrhG).
 #
 
-
 ############################################
 ################# CHANGE ###################
-ver=3.3.3
-dat=04.02.2022
+ver=3.3.4
+dat=22.02.2022
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
 ############################################
@@ -27,7 +26,6 @@ function jumpto
     exit
 }
 
-
 #JumpTo Definitionen
 menue=${1:-"menue"}
 start=${2:-"start"}
@@ -38,13 +36,11 @@ installall=${6:-"installall"}
 delete=${7:-"delete"}
 installscripts=${8:-"installscripts"}
 
-
 # Farbcodes definieren
 red=($(tput setaf 1))
 green=($(tput setaf 2))
 yellow=($(tput setaf 3))
 reset=($(tput sgr0))
-
 
 
 function error
@@ -69,7 +65,6 @@ function error
     exit 0
 }
 
-
 #Farbcode beim start reseten
 echo "$reset"
 
@@ -77,8 +72,18 @@ echo "$reset"
 FILE="/tmp/out.$$"
 GREP="/bin/grep"
 if [ "$(id -u)" != "0" ]; then
-   echo "Das Script muss als root gestartet werden." 1>&2
-   exit 0
+    echo "Das Script muss als root gestartet werden." 1>&2
+    exit 1
+fi
+
+#Internet check
+if ping -c 1 1.1.1.1; then
+    echo ""
+else
+    clear
+    echo "Es konnte keine Netzwerk Verbindung zu '1.1.1.1' hergestellt werden."
+    echo "Das Script kann ohne Internet nicht ausgeführt werden."
+    exit 1
 fi
 
 #Erster start Check
@@ -166,7 +171,7 @@ failedmenue:
     echo "  2. Bot löschen"
     tmp=($(tput setaf 4)) && echo -n "$tmp"
     read -t0.1
-    echo "  3. Bot starten/stoppen"
+    echo "  3. Bot starten / stoppen"
     tmp=($(tput setaf 4)) && echo -n "$tmp"
     read -t0.1
     echo "  4. Scripts für den SinusBot installieren"
@@ -177,9 +182,13 @@ failedmenue:
     read -t0.1
     echo "  6. Script Updaten"
     read -t0.1
+    tmp=($(tput setaf 6))
+    echo -n "$tmp"
+    echo "  7. Apache2 install"
+    read -t0.1
     tmp=($(tput setaf 1))
     echo -n "$tmp"
-    echo "  7. Exit"
+    echo "  8. Exit"
     echo "$reset"
     read -n1 -p "Bot Befehle: " befehl
     case $befehl in
@@ -194,7 +203,7 @@ failedmenue:
     3)
         clear
         echo "Leider können die Bots noch nicht mit dem Script gestartet oder gestoppt werden."
-        echo "Dies musst du leider manuell machen, doch all zu schwer ist das nicht."
+        echo "Dies musst du manuell machen, doch all zu schwer ist das nicht."
         echo "Logge dich zuerst in den Bot ein mit: (ersetze bot1 durch deinen Bot)"
         echo "$yellow"
         echo "su - bot1"
@@ -204,12 +213,12 @@ failedmenue:
         echo -n "$yellow"
         echo "./stop.sh"
         echo "$reset"
-        exit
+        exit 0
     ;;
     4)
         clear
         jumpto $installscripts
-        exit
+        exit 0
     ;;
     5)
         clear
@@ -234,11 +243,18 @@ failedmenue:
         chmod +x $filescript
         clear
         echo "Update abgeschlossen, du kannst das Script jetzt erneut starten."
-        exit
+        exit 0
   	;;
-  	7|q|Q|E|e)
+    7)
         clear
-        exit
+        apt-get install -y apache2
+        clear
+        read -n2 -t3 "$green Apache2 wurde installiert $reset"
+        jumpto $menue
+    ;;
+  	8|q|Q|E|e)
+        clear
+        exit 0
   	;;
   	*)
         clear
@@ -248,10 +264,9 @@ failedmenue:
   	;;
     esac
 
-
 start:
     clear
-    for i in bot1 bot2 bot3 bot4 bot5 bot6 bot7 bot8 bot9 bot10 bot11 bot12 bot13 bot14 bot15 nan
+    for i in bot{1..15} nan
     do
         if id "$i" &>/dev/null; then
             #user exsistiert 
@@ -279,11 +294,8 @@ start:
     echo "Erforderliche Daten werden herruntergeladen"
     wget -P /home/$name/ 'https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/download/sinusbot.current.zip'
     sudo chown $name /var/run/screen/S-$name
-
     # TS-CLient
     wget -P /home/$name/ 'https://files.teamspeak-services.com/releases/client/3.5.3/TeamSpeak3-Client-linux_amd64-3.5.3.run'
-
-    # TS-Client
     clear
     echo "$red"
     echo  "Bitte beachte, dass das Passwort local als ROH-Datei gespeichert wird."
@@ -291,9 +303,9 @@ start:
     read -p "Bitte erstelle ein Passwort fuer den Sinusbot: $reset" pw
     clear
     # Port
-        for i in 8087 8088 8089 8090 8091 8092 8093 8094 8095 8096 8097 8098 9099 9100 9101 nan
+    for i in {8087..8101} nan
     do
-        if id "$i" &>/dev/null; then
+        if grep -Fxq "$i" ports; then
             #user exsistiert 
             continue
         elif [ "$i" == "nan" ]; then
@@ -320,7 +332,7 @@ start:
     echo "echo 'clear' >> /home/$name/stop.sh" >> /home/$name/1ststart.sh
     echo "sudo chmod u+x /home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
     echo "clear" >> /home/$name/1ststart.sh
-    echo "echo $yellow Zum akzeptieren 'ENTER', 'q', 'y' und 'ENTER' drücken $reset" >> /home/$name/1ststart.sh
+    echo "echo Zum akzeptieren 'ENTER', 'q', 'y' und 'ENTER' drücken" >> /home/$name/1ststart.sh
     echo "echo" >> /home/$name/1ststart.sh
     echo "echo -----------------------------------------------------" >> /home/$name/1ststart.sh
     echo "/home/$name/TeamSpeak3-Client-linux_amd64-3.5.3.run" >> /home/$name/1ststart.sh
@@ -379,7 +391,7 @@ start:
     chmod u+rx /home/$name/youtube-dl
     screen -dmS tmp /home/$name/youtube-dl -U
     su - $name
-    exit
+    exit 0
 
 installscripts:
     clear
@@ -392,7 +404,6 @@ installscripts:
     done
     echo
     echo
-    read -t0.5
     read -n1 -p "Willst du diese Scripts installieren? (Y|N) " scripts
     case $scripts in
     Y|y|J|j)
@@ -413,7 +424,6 @@ installscripts:
         echo "sudo rm /home/$name/scripts/scriptspack-latest.zip" >> /home/$name/scriptinstall.sh
         echo "sudo rm /home/$name/scriptinstall.sh" >> /home/$name/scriptinstall.sh
         echo "clear" >> /home/$name/scriptinstall.sh
-        clear
         sudo chmod 777 /home/$name/scriptinstall.sh
         clear
         echo "Ich kann zusätzlich noch Scripts löschen, die in den meisten Fällen nicht benötigt werden."
@@ -440,7 +450,7 @@ installscripts:
             clear
             ;;
             n|N)
-            echo "echo 'Es wurde keine weiteren Scripts gelöscht!'" >> /home/$name/scriptinstall.sh
+            echo "echo 'Es wurden keine weiteren Scripts gelöscht!'" >> /home/$name/scriptinstall.sh
             clear
             ;;
         esac
@@ -450,19 +460,15 @@ installscripts:
         echo "Bitte gebe nun './scriptinstall.sh' ein um die installation abzuschließen!"
         su $name -c /home/$name/scriptinstall.sh
         su - $name
-        exit
+        exit 0
     ;;
     n|N)
         clear
         echo "Das Script wird nun beendet!"
-        exit
+        exit 0
     ;;
 	esac
-    exit
-
-
-
-
+    exit 0
 
 delete:
     echo "Exsistierende Benutzer:"

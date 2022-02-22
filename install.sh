@@ -9,7 +9,7 @@ if [ "$(id -u)" != "0" ]; then
   exit 1
 fi
 
-apt-get install  -y sudo || :
+apt-get install -y sudo || :
 sudo apt-get install -y curl
 clear
 curl --progress-bar https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh --output MultiscriptByMobulos.sh

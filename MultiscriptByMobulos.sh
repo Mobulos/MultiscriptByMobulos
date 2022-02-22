@@ -10,7 +10,7 @@
 
 ############################################
 ################# CHANGE ###################
-ver=3.3.4
+ver=3.3.5
 dat=22.02.2022
 filescript=MultiscriptByMobulos.sh
 link=https://raw.githubusercontent.com/Mobulos/MultiscriptByMobulos/master/MultiscriptByMobulos.sh
@@ -247,8 +247,18 @@ failedmenue:
   	;;
     7)
         clear
-        apt-get install -y apache2
-        clear
+        apt -qq list apache2 | grep -v "installed" | awk -F/ '{print $1}' > /root/list.txt
+        packages=$(cat /root/list.txt)
+        grep -q '[^[:space:]]' < /root/list.txt
+        CHECK_LIST=$?
+        if [ $CHECK_LIST -eq 1 ]; then
+            clear
+            echo $red"Apache2 ist bereits installiert."
+            read -n1 -t3
+        else
+            apt-get install -y apache2
+            clear
+        fi
         read -n2 -t3 "$green Apache2 wurde installiert $reset"
         jumpto $menue
     ;;
